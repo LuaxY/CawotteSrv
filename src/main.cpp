@@ -5,7 +5,11 @@ using Poco::Thread;
 
 int main(int argc, char** argv)
 {
-    std::cout << "[Cawotte Server] Starting..." << std::endl;
+    std::cout << "[Cawotte Server "
+        << CawotteSrv_MAJOR << "."
+        << CawotteSrv_MINOR << "."
+        << CawotteSrv_PATCH
+        << "] Starting..." << std::endl;
 
     Net::Server server("0.0.0.0", 5555);
 
