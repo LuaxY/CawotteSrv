@@ -1,0 +1,50 @@
+{
+    "auth": {
+        "server": {
+            "host": "0.0.0.0",
+            "port": 5555
+        },
+        "database": {
+            "host": "127.0.0.1",
+            "port": 3306,
+            "user": "root",
+            "pass": "",
+            "dbname": "cawotte_auth"
+        }
+    },
+    "world": {
+        "Jiva": {
+            "server": {
+                "host": "0.0.0.0",
+                "port": 6666
+            },
+            "database": {
+                "host": "127.0.0.1",
+                "port": 3306,
+                "user": "root",
+                "pass": "",
+                "dbname": "cawotte_world_jiva"
+            }
+        }
+    },
+    "shop": {
+        "url": "http://cawotte.dev/shop",
+        "database": {
+            "host": "127.0.0.1",
+            "port": 3306,
+            "user": "root",
+            "pass": "",
+            "dbname": "cawotte_shop"
+        }
+    },
+    "common": {
+        "ipc": {
+            "key": "IPC_SECRETKEY"
+        },
+        "cache": {
+            "host": "127.0.0.1",
+            "port": 3679,
+            "key": "REDIS_SECRETKEY"
+        }
+    }
+}
