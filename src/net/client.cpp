@@ -2,7 +2,9 @@
 #include <iostream>
 
 #include <Poco/Net/SocketStream.h>
+#include <Poco/Thread.h>
 
+using Poco::Thread;
 using Poco::Net::SocketStream;
 
 Client::Client(StreamSocket clientSocket) :
@@ -19,6 +21,6 @@ void Client::run()
     for (;;)
     {
         _clientSocket.sendBytes("abc", 3);
-        sleep(1);
+        Thread::sleep(1000);
     }
 }
