@@ -9,6 +9,8 @@
 using Poco::Runnable;
 using Poco::Net::StreamSocket;
 
+namespace Net {
+
 class Client : public Runnable
 {
 public:
@@ -18,5 +20,7 @@ public:
 private:
     StreamSocket _clientSocket;
 };
+
+} // Net
 
 #endif // CLIENT_H

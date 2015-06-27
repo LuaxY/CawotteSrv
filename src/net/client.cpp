@@ -7,12 +7,12 @@
 using Poco::Thread;
 using Poco::Net::SocketStream;
 
-Client::Client(StreamSocket clientSocket) :
+Net::Client::Client(StreamSocket clientSocket) :
     _clientSocket(clientSocket)
 {
 }
 
-void Client::run()
+void Net::Client::run()
 {
     // Init client here (send hello message)
 

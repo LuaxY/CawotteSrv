@@ -17,10 +17,12 @@ using Poco::Net::ServerSocket;
 using Poco::Net::StreamSocket;
 using Poco::Net::SocketAddress;
 
-class Server : public Runnable
-{
+namespace Net {
+
+class Server : public Runnable {
 public:
     Server(std::string ipToBind, unsigned short portToListen);
+
     void run();
 
 private:
@@ -30,5 +32,7 @@ private:
     ThreadPool _clientThreadPool;
     std::vector<std::shared_ptr<Client>> _clientList;
 };
+
+} // Net
 
 #endif // SERVER_H
