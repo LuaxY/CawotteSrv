@@ -16,12 +16,7 @@ find_package(Poco)
 include_directories(${Poco_INCLUDE_DIRS})
 link_directories(${Poco_LIBRARY_DIRS})
 
-set(SOURCE_FILES
-    src/net/client.cpp
-    src/net/client.h
-    src/net/server.cpp
-    src/net/server.h
-    src/main.cpp)
+file(GLOB_RECURSE SOURCE_FILES src/*.*)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME} ${POCO_LIBRARY_REL} ${POCO_Net_LIBRARY_REL})
