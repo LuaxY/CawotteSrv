@@ -16,6 +16,7 @@ find_package(Poco)
 include_directories(${Poco_INCLUDE_DIRS})
 link_directories(${Poco_LIBRARY_DIRS})
 
+include_directories(src)
 file(GLOB_RECURSE SOURCE_FILES src/*.*)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})

@@ -9,7 +9,10 @@
 #ifndef CAWOTTESRV_PACKET_H
 #define CAWOTTESRV_PACKET_H
 
+#include "dofus/network/messages/imessage.h"
 #include <vector>
+
+using Dofus::Network::Messages::IMessage;
 
 namespace Net {
 
@@ -17,14 +20,14 @@ class Packet
 {
 public:
     Packet(std::vector<char> buffer);
-    Packet(/*IMessage message*/int message);
+    Packet(IMessage message);
     ~Packet();
 
     void serialize();
     void deserialize();
 
     const std::vector<char> getBuffer();
-    const /*IMessage*/ int getMessage();
+    const IMessage getMessage();
 
 private:
     unsigned char _header;
@@ -34,7 +37,7 @@ private:
     std::vector<char> _data;
 
     std::vector<char> _buffer;
-    /*IMessage*/int _message;
+    IMessage _message;
 };
 
 } // Net

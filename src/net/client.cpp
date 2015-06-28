@@ -25,7 +25,8 @@ void Client::run()
 {
     // Init client here (send hello message)
 
-    Packet test(0); // TODO: create fake IMessage
+    IMessage message;
+    Packet test(message); // TODO: create fake IMessage
     send(test);
 
     std::cout << "SEND DATA..." << std::endl << std::flush;;

@@ -16,7 +16,7 @@ Packet::Packet(std::vector<char> buffer) :
 {
 }
 
-Packet::Packet(/*IMessage message*/int message) :
+Packet::Packet(IMessage message) :
     _message(message)
 {
 }
@@ -82,7 +82,7 @@ const std::vector<char> Packet::getBuffer()
     return _buffer;
 }
 
-const /*IMessage*/ int Packet::getMessage()
+const IMessage Packet::getMessage()
 {
     return _message;
 }
