@@ -9,14 +9,16 @@
 #include "server.h"
 #include <iostream>
 
-Net::Server::Server(std::string ipToBind, unsigned short portToListen) :
+using Net::Server;
+
+Server::Server(std::string ipToBind, unsigned short portToListen) :
    _ipToBind(ipToBind),
    _portToBind(portToListen),
    _clientThreadPool(1, 100)
 {
 }
 
-void Net::Server::run()
+void Server::run()
 {
     SocketAddress socketAddress(_ipToBind, _portToBind);
 

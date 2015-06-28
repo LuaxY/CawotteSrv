@@ -12,15 +12,16 @@
 #include <Poco/Net/SocketStream.h>
 #include <Poco/Thread.h>
 
+using Net::Client;
 using Poco::Thread;
 using Poco::Net::SocketStream;
 
-Net::Client::Client(StreamSocket clientSocket) :
+Client::Client(StreamSocket clientSocket) :
     _clientSocket(clientSocket)
 {
 }
 
-void Net::Client::run()
+void Client::run()
 {
     // Init client here (send hello message)
 
