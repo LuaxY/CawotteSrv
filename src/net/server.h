@@ -1,5 +1,13 @@
-#ifndef SERVER_H
-#define SERVER_H
+//
+// server.h
+// CawotteSrv
+//
+// Created by Luax on 6/28/15.
+// Copyright (c) 2015 Luax. All rights reserved.
+//
+
+#ifndef CAWOTTESRV_SERVER_H
+#define CAWOTTESRV_SERVER_H
 
 #include <string>
 #include <memory>
@@ -19,7 +27,8 @@ using Poco::Net::SocketAddress;
 
 namespace Net {
 
-class Server : public Runnable {
+class Server : public Runnable
+{
 public:
     Server(std::string ipToBind, unsigned short portToListen);
 
@@ -35,4 +44,4 @@ private:
 
 } // Net
 
-#endif // SERVER_H
+#endif // CAWOTTESRV_SERVER_H

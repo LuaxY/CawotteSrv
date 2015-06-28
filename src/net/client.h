@@ -1,5 +1,13 @@
-#ifndef CLIENT_H
-#define CLIENT_H
+//
+// client.h
+// CawotteSrv
+//
+// Created by Luax on 6/28/15.
+// Copyright (c) 2015 Luax. All rights reserved.
+//
+
+#ifndef CAWOTTESRV_CLIENT_H
+#define CAWOTTESRV_CLIENT_H
 
 #include <memory>
 
@@ -23,4 +31,4 @@ private:
 
 } // Net
 
-#endif // CLIENT_H
+#endif // CAWOTTESRV_CLIENT_H
