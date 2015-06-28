@@ -16,18 +16,25 @@ namespace Net {
 class Packet
 {
 public:
-    Packet();
+    Packet(std::vector<char> buffer);
+    Packet(/*IMessage message*/int message);
     ~Packet();
 
     void serialize();
     void deserialize();
 
+    const std::vector<char> getBuffer();
+    const /*IMessage*/ int getMessage();
+
 private:
     unsigned char _header;
     unsigned int _id;
     unsigned int _sizeLenght;
-    unsigned long _size;
+    unsigned int _size;
     std::vector<char> _data;
+
+    std::vector<char> _buffer;
+    /*IMessage*/int _message;
 };
 
 } // Net

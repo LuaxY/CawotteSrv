@@ -7,7 +7,6 @@
 //
 
 #include "client.h"
-#include "packet.h"
 #include <iostream>
 
 #include <Poco/Net/SocketStream.h>
@@ -26,16 +25,8 @@ void Client::run()
 {
     // Init client here (send hello message)
 
-    try
-    {
-        Packet test;
-        test.serialize();
-    }
-    catch (std::exception& e)
-    {
-        std::cout << e.what() << std::endl;
-    }
-
+    Packet test(0); // TODO: create fake IMessage
+    send(test);
 
     std::cout << "SEND DATA..." << std::endl << std::flush;;
 
@@ -43,5 +34,19 @@ void Client::run()
     {
         _clientSocket.sendBytes("abc", 3);
         Thread::sleep(1000);
+    }
+}
+
+void Client::send(Packet packet)
+{
+    try
+    {
+        packet.serialize();
+        std::vector<char> buffer = packet.getBuffer();
+        _clientSocket.sendBytes(buffer.data(), buffer.size());
+    }
+    catch (std::exception& e)
+    {
+        std::cout << e.what() << std::endl;
     }
 }

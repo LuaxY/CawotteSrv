@@ -9,6 +9,7 @@
 #ifndef CAWOTTESRV_CLIENT_H
 #define CAWOTTESRV_CLIENT_H
 
+#include "packet.h"
 #include <memory>
 
 #include <Poco/Runnable.h>
@@ -24,6 +25,7 @@ class Client : public Runnable
 public:
     Client(StreamSocket clientSocket);
     void run();
+    void send(Packet packet);
 
 private:
     StreamSocket _clientSocket;
