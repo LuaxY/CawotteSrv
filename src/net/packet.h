@@ -19,18 +19,8 @@ public:
     Packet();
     ~Packet();
 
-    enum SerialisationResult
-    {
-        OK,
-        BAD_HEADER,
-        BAD_ID,
-        BAD_SIZE_LENGHT,
-        BAD_SIZE,
-        BAD_DATA
-    };
-
-    SerialisationResult serialize();
-    SerialisationResult deserialize();
+    void serialize();
+    void deserialize();
 
 private:
     unsigned char _header;

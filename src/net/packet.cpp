@@ -7,6 +7,7 @@
 //
 
 #include "packet.h"
+#include <stdexcept>
 
 using Net::Packet;
 
@@ -18,12 +19,12 @@ Packet::~Packet()
 {
 }
 
-Packet::SerialisationResult Packet::serialize()
+void Packet::serialize()
 {
-    return OK;
+    throw std::logic_error("function not implemented");
 }
 
-Packet::SerialisationResult Packet::deserialize()
+void Packet::deserialize()
 {
-    return OK;
+    throw std::logic_error("function not implemented");
 }

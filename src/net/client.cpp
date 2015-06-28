@@ -7,6 +7,7 @@
 //
 
 #include "client.h"
+#include "packet.h"
 #include <iostream>
 
 #include <Poco/Net/SocketStream.h>
@@ -24,6 +25,17 @@ Client::Client(StreamSocket clientSocket) :
 void Client::run()
 {
     // Init client here (send hello message)
+
+    try
+    {
+        Packet test;
+        test.serialize();
+    }
+    catch (std::exception& e)
+    {
+        std::cout << e.what() << std::endl;
+    }
+
 
     std::cout << "SEND DATA..." << std::endl << std::flush;;
 
