@@ -136,7 +136,7 @@ void BinaryWriter::write(const std::vector<T>& data)
     const char* bytes = reinterpret_cast<const char*>(&data[0]);
     unsigned short size = static_cast<unsigned short>(data.size());
 
-    write(size);
+    writeUShort(size);
 
     if (bytes == nullptr || size == 0)
     {
