@@ -1,4 +1,4 @@
-#include "net/server.h"
+#include "core/net/server.h"
 #include <iostream>
 
 using Poco::Thread;
@@ -11,7 +11,7 @@ int main(int argc, char** argv)
         << CawotteSrv_PATCH
         << "] Starting..." << std::endl;
 
-    Net::Server server("0.0.0.0", 5555);
+    Core::Net::Server server("0.0.0.0", 5555);
 
     Thread serverThread;
     serverThread.start(server);

@@ -12,7 +12,7 @@
 #include <Poco/Net/SocketStream.h>
 #include <Poco/Thread.h>
 
-using Net::Client;
+using Core::Net::Client;
 using Poco::Thread;
 using Poco::Net::SocketStream;
 

@@ -9,7 +9,7 @@
 #include "packet.h"
 #include <stdexcept>
 
-using Net::Packet;
+using Core::Net::Packet;
 
 Packet::Packet()
 {

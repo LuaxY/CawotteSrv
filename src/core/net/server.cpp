@@ -9,7 +9,7 @@
 #include "server.h"
 #include <iostream>
 
-using Net::Server;
+using Core::Net::Server;
 
 Server::Server(std::string ipToBind, unsigned short portToListen) :
    _ipToBind(ipToBind),

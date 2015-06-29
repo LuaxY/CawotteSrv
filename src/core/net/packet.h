@@ -17,6 +17,7 @@ using Dofus::Network::Messages::IMessage;
 using Core::IO::BinaryReader;
 using Core::IO::BinaryWriter;
 
+namespace Core {
 namespace Net {
 
 class Packet
@@ -42,6 +43,6 @@ private:
     unsigned short computeHeader(unsigned short id, unsigned short lengthType);
 };
 
-} // Net
+}} // Core::Net
 
 #endif // CAWOTTESRV_PACKET_H
