@@ -22,7 +22,8 @@ Packet::~Packet()
 void Packet::serialize(IMessage& message, std::vector<char>& buffer)
 {
     BinaryWriter writer(buffer);
-    message.serialize(writer);
+    BinaryWriter messageWriter(_data);
+    message.serialize(messageWriter);
 
     _id = message.getId();
     _length = static_cast<unsigned int>(_data.size());
@@ -51,7 +52,7 @@ void Packet::serialize(IMessage& message, std::vector<char>& buffer)
             break;
     }
 
-    writer.writeBytes(_data);
+    writer.writeBytes(_data, false);
 }
 
 bool Packet::deserialize(std::vector<char>& buffer)

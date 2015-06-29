@@ -30,7 +30,7 @@ public:
     unsigned int index();
 
     void writeByte(char data);
-    void writeBytes(std::vector<char> data);
+    void writeBytes(std::vector<char> data, bool writeSize = true);
     void writeShort(signed short data);
     void writeUShort(unsigned short data);
     void writeInt(signed int data);
@@ -52,7 +52,7 @@ private:
     void write(const T& data);
 
     template<class T>
-    void write(const std::vector<T>& data);
+    void write(const std::vector<T>& data, bool writeSize = true);
 
 };
 

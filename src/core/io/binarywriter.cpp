@@ -29,9 +29,9 @@ void BinaryWriter::writeByte(char data)
     write(data);
 }
 
-void BinaryWriter::writeBytes(std::vector<char> data)
+void BinaryWriter::writeBytes(std::vector<char> data, bool writeSize)
 {
-    write(data);
+    write(data, writeSize);
 }
 
 void BinaryWriter::writeShort(signed short data)
@@ -131,12 +131,15 @@ void BinaryWriter::write(const T& data)
 }
 
 template<class T>
-void BinaryWriter::write(const std::vector<T>& data)
+void BinaryWriter::write(const std::vector<T>& data, bool writeSize)
 {
     const char* bytes = reinterpret_cast<const char*>(&data[0]);
     unsigned short size = static_cast<unsigned short>(data.size());
 
-    writeUShort(size);
+    if (writeSize)
+    {
+        writeUShort(size);
+    }
 
     if (bytes == nullptr || size == 0)
     {
