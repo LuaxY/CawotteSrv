@@ -19,25 +19,24 @@ namespace Net {
 class Packet
 {
 public:
-    Packet(std::vector<char> buffer);
-    Packet(IMessage message);
+    Packet();
     ~Packet();
 
-    void serialize();
-    void deserialize();
-
-    const std::vector<char> getBuffer();
-    const IMessage getMessage();
+    void serialize(IMessage message, std::vector<char>& buffer);
+    bool deserialize(std::vector<char>& buffer);
 
 private:
-    unsigned char _header;
-    unsigned int _id;
-    unsigned int _sizeLenght;
-    unsigned int _size;
+    unsigned short _header;
+    unsigned short _id;
+    unsigned short _lengthType;
+    unsigned int _length;
     std::vector<char> _data;
 
-    std::vector<char> _buffer;
-    IMessage _message;
+    unsigned short getMessageId(unsigned short header);
+    unsigned short getMessageLengthType(unsigned short header);
+    unsigned int getMessageLength(unsigned int lengthType, BinaryReader& reader);
+    unsigned short computeLengthType(unsigned int length);
+    unsigned short computeHeader(unsigned short id, unsigned short lengthType);
 };
 
 } // Net

@@ -9,13 +9,19 @@
 #ifndef CAWOTTESRV_IMESSAGE_H
 #define CAWOTTESRV_IMESSAGE_H
 
+#include <vector>
+
 namespace Dofus {
 namespace Network {
 namespace Messages {
 
 class IMessage
 {
+public:
+    virtual unsigned short getId();
 
+    virtual bool serialize(std::vector<char>& buffer);
+    virtual bool deserialize();
 };
 
 }}} // Dofus::Network::Messages

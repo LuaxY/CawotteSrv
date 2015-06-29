@@ -26,8 +26,7 @@ void Client::run()
     // Init client here (send hello message)
 
     IMessage message;
-    Packet test(message); // TODO: create fake IMessage
-    send(test);
+    send(message); // TODO: create fake IMessage
 
     std::cout << "SEND DATA..." << std::endl << std::flush;;
 
@@ -38,13 +37,16 @@ void Client::run()
     }
 }
 
-void Client::send(Packet packet)
+void Client::send(IMessage message)
 {
     try
     {
-        packet.serialize();
-        std::vector<char> buffer = packet.getBuffer();
-        _clientSocket.sendBytes(buffer.data(), buffer.size());
+        std::vector<char> buffer;
+        Packet packet;
+
+        packet.serialize(message, buffer);
+
+        _clientSocket.sendBytes(buffer.data(), static_cast<int>(buffer.size()));
     }
     catch (std::exception& e)
     {

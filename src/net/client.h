@@ -25,7 +25,7 @@ class Client : public Runnable
 public:
     Client(StreamSocket clientSocket);
     void run();
-    void send(Packet packet);
+    void send(IMessage message);
 
 private:
     StreamSocket _clientSocket;

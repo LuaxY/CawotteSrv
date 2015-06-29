@@ -11,13 +11,7 @@
 
 using Net::Packet;
 
-Packet::Packet(std::vector<char> buffer) :
-    _buffer(buffer) // TODO: this MUST be a pointer
-{
-}
-
-Packet::Packet(IMessage message) :
-    _message(message)
+Packet::Packet()
 {
 }
 
@@ -25,64 +19,127 @@ Packet::~Packet()
 {
 }
 
-void Packet::serialize()
+void Packet::serialize(IMessage message, std::vector<char>& buffer)
 {
-    /*
-     * TODO: serialize packet
-     *
-     *  Create BinaryWriter
-     *
-     *  header = message.getId() & 3 (TODO: check this)
-     *  header = message.getSizeType() | 2
-     *
-     *  writeByte(header)
-     *
-     *  switch message.getSizeType()
-     *      1:
-     *          writeByte(message.getSize())
-     *      2:
-     *          writeUInt(message.getSize())
-     *      3:
-     *          TODO: write for 3 bytes size
-     *
-     * message.serialize()
-     *
-     * writeBytes(message.getData())
-     */
+    BinaryWriter writer(buffer); // TODO: implement BinaryWriter
 
-    throw std::logic_error("function not implemented");
+    message.serialize(_data);
+
+    _id = message.getId();
+    _length = static_cast<unsigned int>(_data.size());
+    _lengthType = computeLengthType(_length);
+    _header = computeHeader(_id, _lengthType);
+
+    if (_header == 0)
+    {
+        throw std::logic_error("header must be non null");
+    }
+
+    writer.writeShort(_header);
+
+    switch (_lengthType)
+    {
+        case 1:
+            writer.writeByte(_length);
+            break;
+        case 2:
+            writer.writeUShort(_length);
+            break;
+        case 3:
+            // TODO: Write for 3 bytes length
+            break;
+    }
+
+    writer.writeBytes(_data, _length);
 }
 
-void Packet::deserialize()
+bool Packet::deserialize(std::vector<char>& buffer)
 {
-    /*
-     * TODO: deserialize packet
-     *
-     * Create BinaryReader with buffer
-     *
-     * if reader.bytesAvailable() > header size
-     *      Read header
-     *      Get message Id
-     *      Get length size
-     *
-     * if reader.bytesAvailable() > length size
-     *      Get length
-     *
-     * if reader.bytesAvailable() > data size
-     *      Get Data
-     *
-     * Remove X bytes from beginning of buffer
-     */
+    _header = 0;
+    _id = 0;
+    _lengthType = 0;
+    _length = 0;
+    _data.clear();
 
-    throw std::logic_error("function not implemented");
+    BinaryReader reader(buffer); // TODO: implement BinaryReader
+    unsigned int countReadedBytes = 0;
+
+    if (reader.bytesAvailable() < sizeof(_header))
+    {
+        return false;
+    }
+
+    _header = reader.readShort();
+    _id = getMessageId(_header);
+    _lengthType = getMessageLengthType(_header);
+    countReadedBytes += sizeof(_header);
+
+    if (reader.bytesAvailable() < _lengthType)
+    {
+        return false;
+    }
+
+    _length = getMessageLength(_lengthType, reader);
+    countReadedBytes += _lengthType;
+
+    if (reader.bytesAvailable() < _length)
+    {
+        return false;
+    }
+
+    _data = reader.readBytes(_length);
+    countReadedBytes += _length;
+
+    buffer.erase(buffer.begin(), buffer.begin() + countReadedBytes);
+
+    return true;
 }
 
-const std::vector<char> Packet::getBuffer()
+unsigned short Packet::getMessageId(unsigned short header)
 {
-    return _buffer;
+    return header >> 2;
 }
 
-const IMessage Packet::getMessage()
+unsigned short Packet::getMessageLengthType(unsigned short header)
 {
-    return _message;
+    return static_cast<unsigned short>(header & 3);
+}
+
+unsigned int Packet::getMessageLength(unsigned short lengthType, BinaryReader& reader)
+{
+    unsigned int length = 0;
+
+    switch(lengthType)
+    {
+        case 1:
+            length = reader.readByte();
+            break;
+        case 2:
+            length = reader.readUShort();
+            break;
+        case 3:
+            length = ((reader.readByte() & 255) << 16) +
+                     ((reader.readByte() & 255) << 8) +
+                      (reader.readByte() & 255);
+            break;
+    }
+
+    return length;
+}
+
+unsigned short Packet::computeLengthType(unsigned int length)
+{
+    if (length > 65535)
+        return 3;
+    if (length > 255)
+        return 2;
+    if (length > 0)
+        return 1;
+
+    return 0;
+}
+
+unsigned short Packet::computeHeader(unsigned short id, unsigned short lengthType)
+{
+    return id << 2 | lengthType;
 }
