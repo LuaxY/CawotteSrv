@@ -119,6 +119,20 @@ char BinaryReader::readByte()
     return value;
 }
 
+std::vector<char> BinaryReader::readBytes()
+{
+    int length = readUShort();
+
+    std::vector<char> value;
+
+    for (int i = 0; i < length; i++)
+        value.push_back(_buffer[_index + i]);
+
+    value.push_back(0);
+    _index += length;
+    return value;
+}
+
 std::vector<char> BinaryReader::readBytes(int length)
 {
     std::vector<char> value;

@@ -16,7 +16,7 @@ using Dofus::Network::Messages::IMessage;
 class HelloConnectMessage : public IMessage
 {
 public:
-    HelloConnectMessage(std::string _salt, std::vector<char> _key);
+    void initHelloConnectMessage(std::string _salt, std::vector<char> _key);
     unsigned short getId();
     std::string getName();
     void serialize(BinaryWriter& writer);

@@ -8,11 +8,10 @@
 
 #include "helloconnectmessage.h"
 
-HelloConnectMessage::HelloConnectMessage(std::string _salt, std::vector<char> _key) :
-    salt(_salt),
-    key(_key)
+void HelloConnectMessage::initHelloConnectMessage(std::string _salt, std::vector<char> _key)
 {
-
+    salt = _salt;
+    key = _key;
 }
 
 unsigned short HelloConnectMessage::getId()
@@ -33,6 +32,5 @@ void HelloConnectMessage::serialize(BinaryWriter& writer)
 bool HelloConnectMessage::deserialize(BinaryReader& reader)
 {
     salt = reader.readUTF();
-    unsigned short length = reader.readUShort();
-    key = reader.readBytes(length);
+    key = reader.readBytes();
 }

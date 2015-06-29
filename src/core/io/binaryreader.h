@@ -40,6 +40,7 @@ public:
     signed long readLong();
     unsigned long readULong();
     char readByte();
+    std::vector<char> readBytes();
     std::vector<char> readBytes(int length);
     std::string readUTF();
     std::string readUTFBytes(unsigned int length);

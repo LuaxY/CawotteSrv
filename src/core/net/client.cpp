@@ -28,7 +28,8 @@ void Client::run()
     // Init client here (send hello message)
 
     std::vector<char> key;
-    HelloConnectMessage hcm("abc", key);
+    HelloConnectMessage hcm;
+    hcm.initHelloConnectMessage("abc", key);
     send(hcm);
 
     std::cout << "SEND DATA..." << std::endl << std::flush;;
