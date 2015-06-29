@@ -19,11 +19,10 @@ Packet::~Packet()
 {
 }
 
-void Packet::serialize(IMessage message, std::vector<char>& buffer)
+void Packet::serialize(IMessage& message, std::vector<char>& buffer)
 {
-    BinaryWriter writer(buffer); // TODO: implement BinaryWriter
-
-    message.serialize(_data);
+    BinaryWriter writer(buffer);
+    message.serialize(writer);
 
     _id = message.getId();
     _length = static_cast<unsigned int>(_data.size());

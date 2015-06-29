@@ -26,7 +26,7 @@ public:
     Packet();
     ~Packet();
 
-    void serialize(IMessage message, std::vector<char>& buffer);
+    void serialize(IMessage& message, std::vector<char>& buffer);
     bool deserialize(std::vector<char>& buffer);
 
 private:

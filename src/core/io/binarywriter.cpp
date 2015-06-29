@@ -14,6 +14,7 @@
 using Core::IO::BinaryWriter;
 
 BinaryWriter::BinaryWriter(std::vector<char>& buffer) :
+    _index(0),
     _buffer(buffer)
 {
 }

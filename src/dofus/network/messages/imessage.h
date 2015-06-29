@@ -10,6 +10,13 @@
 #define CAWOTTESRV_IMESSAGE_H
 
 #include <vector>
+#include <string>
+
+#include "core/io/binaryreader.h"
+#include "core/io/binarywriter.h"
+
+using Core::IO::BinaryReader;
+using Core::IO::BinaryWriter;
 
 namespace Dofus {
 namespace Network {
@@ -18,10 +25,10 @@ namespace Messages {
 class IMessage
 {
 public:
-    virtual unsigned short getId();
-
-    virtual bool serialize(std::vector<char>& buffer);
-    virtual bool deserialize();
+    virtual unsigned short getId() = 0;
+    virtual std::string getName() = 0;
+    virtual void serialize(BinaryWriter& writer) = 0;
+    virtual bool deserialize(BinaryReader& reader) = 0;
 };
 
 }}} // Dofus::Network::Messages

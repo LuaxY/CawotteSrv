@@ -12,6 +12,8 @@
 #include <Poco/Net/SocketStream.h>
 #include <Poco/Thread.h>
 
+#include "dofus/network/messages/connection/helloconnectmessage.h"
+
 using Core::Net::Client;
 using Poco::Thread;
 using Poco::Net::SocketStream;
@@ -25,8 +27,9 @@ void Client::run()
 {
     // Init client here (send hello message)
 
-    IMessage message;
-    send(message); // TODO: create fake IMessage
+    std::vector<char> key;
+    HelloConnectMessage hcm("abc", key);
+    send(hcm);
 
     std::cout << "SEND DATA..." << std::endl << std::flush;;
 
@@ -37,7 +40,7 @@ void Client::run()
     }
 }
 
-void Client::send(IMessage message)
+void Client::send(IMessage& message)
 {
     try
     {

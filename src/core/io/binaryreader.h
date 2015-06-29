@@ -23,7 +23,7 @@ namespace IO {
 class BinaryReader
 {
 public:
-    BinaryReader(const char* buffer, int len);
+    BinaryReader(const char* buffer, int length);
     BinaryReader(const std::vector<char> buffer);
     BinaryReader(const std::deque<char> buffer);
 
@@ -40,9 +40,9 @@ public:
     signed long readLong();
     unsigned long readULong();
     char readByte();
-    std::vector<char> readBytes(int len);
+    std::vector<char> readBytes(int length);
     std::string readUTF();
-    std::string readUTFBytes(unsigned int len);
+    std::string readUTFBytes(unsigned int length);
     bool readBool();
 
 private:
