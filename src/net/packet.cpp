@@ -40,17 +40,19 @@ void Packet::serialize(IMessage message, std::vector<char>& buffer)
     switch (_lengthType)
     {
         case 1:
-            writer.writeByte(_length);
+            writer.writeByte(static_cast<char>(_length));
             break;
         case 2:
-            writer.writeUShort(_length);
+            writer.writeUShort(static_cast<unsigned short>(_length));
             break;
         case 3:
             // TODO: Write for 3 bytes length
             break;
+        default:
+            break;
     }
 
-    writer.writeBytes(_data, _length);
+    writer.writeBytes(_data);
 }
 
 bool Packet::deserialize(std::vector<char>& buffer)
@@ -69,7 +71,7 @@ bool Packet::deserialize(std::vector<char>& buffer)
         return false;
     }
 
-    _header = reader.readShort();
+    _header = reader.readUShort();
     _id = getMessageId(_header);
     _lengthType = getMessageLengthType(_header);
     countReadedBytes += sizeof(_header);
@@ -112,15 +114,18 @@ unsigned int Packet::getMessageLength(unsigned short lengthType, BinaryReader& r
     switch(lengthType)
     {
         case 1:
-            length = reader.readByte();
+            length = static_cast<unsigned int>(reader.readByte());
             break;
         case 2:
             length = reader.readUShort();
             break;
         case 3:
-            length = ((reader.readByte() & 255) << 16) +
-                     ((reader.readByte() & 255) << 8) +
-                      (reader.readByte() & 255);
+            length = static_cast<unsigned int>(
+                        ((reader.readByte() & 255) << 16) +
+                        ((reader.readByte() & 255) << 8) +
+                         (reader.readByte() & 255));
+            break;
+        default:
             break;
     }
 
