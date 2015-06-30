@@ -7,6 +7,7 @@
 //
 
 #include "client.h"
+#include "core/utils/generate.h"
 #include <iostream>
 
 #include <Poco/Net/SocketStream.h>
@@ -15,6 +16,7 @@
 #include "dofus/network/messages/connection/helloconnectmessage.h"
 
 using Core::Net::Client;
+using Core::Utils::Generate;
 using Poco::Thread;
 using Poco::Net::SocketStream;
 
@@ -28,8 +30,10 @@ void Client::run()
     // Init client here (send hello message)
 
     std::vector<char> key;
+    std::string ticket =  Generate::ticket();
+
     HelloConnectMessage hcm;
-    hcm.initHelloConnectMessage("abc", key);
+    hcm.initHelloConnectMessage(ticket, key);
     send(hcm);
 
     std::cout << "SEND DATA..." << std::endl << std::flush;;
