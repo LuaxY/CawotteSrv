@@ -9,6 +9,7 @@
 #include "client.h"
 #include "core/utils/generate.h"
 #include <iostream>
+#include <fstream>
 
 #include <Poco/Net/SocketStream.h>
 #include <Poco/Thread.h>
@@ -29,8 +30,10 @@ void Client::run()
 {
     // Init client here (send hello message)
 
+    std::ifstream keyFile("/home/dev/scratch/CawotteSrv/key/dofus.bin", std::ios::binary);
     std::vector<char> key;
-    std::string ticket =  Generate::ticket();
+    std::copy(std::istreambuf_iterator<char>(keyFile), std::istreambuf_iterator<char>(), std::back_inserter(key));
+    std::string ticket = Generate::ticket();
 
     HelloConnectMessage hcm;
     hcm.initHelloConnectMessage(ticket, key);
