@@ -39,7 +39,7 @@ void Client::run()
     hcm.initHelloConnectMessage(ticket, key);
     send(hcm);
 
-    std::cout << "SEND DATA..." << std::endl << std::flush;;
+    std::cout << "SEND DATA..." << std::endl << std::flush;
 
     for (;;)
     {
