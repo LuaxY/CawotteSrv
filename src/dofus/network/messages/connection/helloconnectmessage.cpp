@@ -26,7 +26,8 @@ std::string HelloConnectMessage::getName()
 void HelloConnectMessage::serialize(BinaryWriter& writer)
 {
     writer.writeUTF(salt);
-    writer.writeBytes(key);
+    // TODO: Write size with writeVarInt
+    writer.writeBytes(key, false);
 }
 
 void HelloConnectMessage::deserialize(BinaryReader& reader)
