@@ -1,4 +1,4 @@
-#include "core/net/server.h"
+#include "core/kernel/kernel.h"
 #include <iostream>
 
 /*
@@ -12,8 +12,6 @@
 #include <Poco/StreamCopier.h>
 #include <fstream>
 */
-
-using Poco::Thread;
 
 /*
 using Poco::Crypto::RSAKey;
@@ -53,11 +51,8 @@ int main(int argc, char** argv)
     StreamCopier::copyStream(decoder, output);
     */
 
-    Core::Net::Server server("0.0.0.0", 5555);
-
-    Thread serverThread;
-    serverThread.start(server);
-    serverThread.join();
+    Kernel kernel = Kernel::create();
+    kernel.init();
 
     return 0;
 }

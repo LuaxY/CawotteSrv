@@ -63,7 +63,7 @@ bool Packet::deserialize(std::vector<char>& buffer)
     _length = 0;
     _data.clear();
 
-    BinaryReader reader(buffer); // TODO: implement BinaryReader
+    BinaryReader reader(buffer);
     unsigned int countReadedBytes = 0;
 
     if (reader.bytesAvailable() < sizeof(_header))
