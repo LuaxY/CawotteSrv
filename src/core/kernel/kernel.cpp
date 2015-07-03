@@ -34,12 +34,11 @@ void Kernel::initConfiguration()
     try
     {
         Config::create();
-        Config::instance().init("/home/dev/scratch/CawotteSrv/config/cawotte.ini");
+        Config::instance().init("./config/cawotte.ini");
     }
     catch (std::exception& e)
     {
         std::cout << e.what() << std::endl;
-        panic();
     }
 }
 
