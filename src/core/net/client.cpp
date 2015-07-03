@@ -31,10 +31,10 @@ void Client::run()
     std::ifstream keyFile("/home/dev/scratch/CawotteSrv/key/dofus.bin", std::ios::binary);
     std::vector<char> key;
     std::copy(std::istreambuf_iterator<char>(keyFile), std::istreambuf_iterator<char>(), std::back_inserter(key));
-    std::string ticket = Generate::ticket();
+    std::string salt = Generate::salt();
 
     HelloConnectMessage hcm;
-    hcm.initHelloConnectMessage(ticket, key);
+    hcm.initHelloConnectMessage(salt, key);
     send(hcm);
 
     std::cout << "SEND DATA..." << std::endl << std::flush;
