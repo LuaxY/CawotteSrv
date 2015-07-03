@@ -9,8 +9,6 @@
 #include "packet.h"
 #include <stdexcept>
 
-using Core::Net::Packet;
-
 Packet::Packet()
 {
 }

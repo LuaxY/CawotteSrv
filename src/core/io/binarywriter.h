@@ -19,9 +19,6 @@
 
 using Poco::ByteOrder;
 
-namespace Core {
-namespace IO {
-
 class BinaryWriter
 {
 public:
@@ -55,7 +52,5 @@ private:
     void write(const std::vector<T>& data, bool writeSize = true);
 
 };
-
-}} // Core::IO
 
 #endif // CAWOTTESRV_BINARYWRITER_H

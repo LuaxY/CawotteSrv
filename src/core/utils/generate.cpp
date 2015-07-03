@@ -10,8 +10,6 @@
 #include <algorithm>
 #include <functional>
 
-using Core::Utils::Generate;
-
 std::default_random_engine Generate::_generator = std::default_random_engine(std::random_device{}());
 
 const std::string Generate::_ticketCharset = "0123456789"
@@ -33,7 +31,7 @@ std::string Generate::salt(unsigned short length)
     return randomString(length, _saltCharset);
 }
 
-unsigned int Generate::random(unsigned short min, unsigned short max)
+int Generate::random(unsigned short min, unsigned short max)
 {
     std::uniform_int_distribution<> rand(min, max);
     return rand(_generator);

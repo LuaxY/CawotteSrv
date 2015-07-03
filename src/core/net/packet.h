@@ -13,13 +13,6 @@
 #include "core/io/binaryreader.h"
 #include "core/io/binarywriter.h"
 
-using Dofus::Network::Messages::IMessage;
-using Core::IO::BinaryReader;
-using Core::IO::BinaryWriter;
-
-namespace Core {
-namespace Net {
-
 class Packet
 {
 public:
@@ -42,7 +35,5 @@ private:
     unsigned short computeLengthType(unsigned int length);
     unsigned short computeHeader(unsigned short id, unsigned short lengthType);
 };
-
-}} // Core::Net
 
 #endif // CAWOTTESRV_PACKET_H

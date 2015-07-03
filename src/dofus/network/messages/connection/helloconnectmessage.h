@@ -11,8 +11,6 @@
 
 #include "dofus/network/messages/imessage.h"
 
-using Dofus::Network::Messages::IMessage;
-
 class HelloConnectMessage : public IMessage
 {
 public:
@@ -20,7 +18,7 @@ public:
     unsigned short getId();
     std::string getName();
     void serialize(BinaryWriter& writer);
-    bool deserialize(BinaryReader& reader);
+    void deserialize(BinaryReader& reader);
 
     static const int id = 3;
 

@@ -12,16 +12,12 @@
 #include <string>
 #include <random>
 
-namespace Core {
-namespace Utils {
-
 class Generate
 {
 public:
-    static void init();
     static std::string ticket(unsigned short length = 32);
     static std::string salt(unsigned short length = 8);
-    static unsigned int random(unsigned short min = 0, unsigned short max = 100);
+    static int random(unsigned short min = 0, unsigned short max = 100);
 
 private:
     static std::default_random_engine _generator;
@@ -31,6 +27,5 @@ private:
     static std::string randomString(unsigned short length, const std::string charset);
 };
 
-}} // Core::Utils
 
 #endif //CAWOTTESRV_TICKET_H

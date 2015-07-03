@@ -15,10 +15,7 @@
 #include <memory>
 #include "inih/INIReader.h"
 
-//namespace Core {
-//namespace Config {
-
-class Config : public Core::Utils::Singleton<Config>
+class Config : public Singleton<Config>
 {
 public:
     Config() { }
@@ -33,7 +30,5 @@ private:
     std::unique_ptr<INIReader> reader;
     std::map<std::string, std::string> parseKey(std::string key);
 };
-
-//}} // Core::Config
 
 #endif //CAWOTTESRV_CONFIG_H

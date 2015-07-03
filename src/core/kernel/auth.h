@@ -9,14 +9,9 @@
 #ifndef CAWOTTESRV_AUTH_H
 #define CAWOTTESRV_AUTH_H
 
-namespace Core {
-namespace Kernel {
-
 class Auth
 {
 
 };
-
-}} // Core::Kernel
 
 #endif //CAWOTTESRV_AUTH_H

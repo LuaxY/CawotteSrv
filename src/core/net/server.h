@@ -25,9 +25,6 @@ using Poco::Net::ServerSocket;
 using Poco::Net::StreamSocket;
 using Poco::Net::SocketAddress;
 
-namespace Core {
-namespace Net {
-
 class Server : public Runnable
 {
 public:
@@ -42,7 +39,5 @@ private:
     ThreadPool _clientThreadPool;
     std::vector<std::shared_ptr<Client>> _clientList;
 };
-
-}} // Core::Net
 
 #endif // CAWOTTESRV_SERVER_H

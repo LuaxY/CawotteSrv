@@ -11,9 +11,6 @@
 
 #include <stdexcept>
 
-namespace Core {
-namespace Utils {
-
 class BooleanByteWrapper
 {
 public:
@@ -21,8 +18,5 @@ public:
     static char setFlag(int flag, char offset, bool value);
     static bool getFlag(char flag, char offset);
 };
-
-}} // Core::Utils
-
 
 #endif //CAWOTTESRV_BOOLEANBYTEWRAPPER_H

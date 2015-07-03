@@ -16,8 +16,6 @@
 
 #include "dofus/network/messages/connection/helloconnectmessage.h"
 
-using Core::Net::Client;
-using Core::Utils::Generate;
 using Poco::Thread;
 using Poco::Net::SocketStream;
 

@@ -11,7 +11,6 @@
 #include "core/net/server.h"
 #include <iostream>
 
-//using Core::Kernel::Kernel;
 using Poco::Thread;
 
 void Kernel::init()
@@ -19,9 +18,9 @@ void Kernel::init()
     initConfiguration();
     initCache();
 
-    Core::Net::Server server(
+    Server server(
             Config::instance().getString("auth_server.host", "0.0.0.0"),
-            Config::instance().getInt("auth_server.port", 5555));
+            static_cast<unsigned short>(Config::instance().getInt("auth_server.port", 5555)));
 
     Thread serverThread;
     serverThread.start(server);

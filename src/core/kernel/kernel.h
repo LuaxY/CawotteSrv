@@ -11,10 +11,7 @@
 
 #include "core/utils/singleton.h"
 
-//namespace Core {
-//namespace Kernel {
-
-class Kernel : public Core::Utils::Singleton<Kernel>
+class Kernel : public Singleton<Kernel>
 {
 public:
     void init();
@@ -27,7 +24,5 @@ public:
 
 private:
 };
-
-//}} // Core::Kernel
 
 #endif //CAWOTTESRV_KERNEL_H

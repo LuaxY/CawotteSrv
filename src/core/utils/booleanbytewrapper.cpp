@@ -8,8 +8,6 @@
 
 #include "booleanbytewrapper.h"
 
-using Core::Utils::BooleanByteWrapper;
-
 char BooleanByteWrapper::setFlag(char flag, char offset, bool value)
 {
     if (offset >= 8)

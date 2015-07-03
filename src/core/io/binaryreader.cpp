@@ -11,8 +11,6 @@
 
 #include "binaryreader.h"
 
-using Core::IO::BinaryReader;
-
 BinaryReader::BinaryReader(const char* buffer, int length) :
     _buffer(buffer, buffer + length),
     _index(0)

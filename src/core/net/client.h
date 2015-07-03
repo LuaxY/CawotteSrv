@@ -18,9 +18,6 @@
 using Poco::Runnable;
 using Poco::Net::StreamSocket;
 
-namespace Core {
-namespace Net {
-
 class Client : public Runnable
 {
 public:
@@ -31,7 +28,5 @@ public:
 private:
     StreamSocket _clientSocket;
 };
-
-}} // Core::Net
 
 #endif // CAWOTTESRV_CLIENT_H

@@ -15,9 +15,6 @@
 #include <memory>
 #include <cassert>
 
-namespace Core {
-namespace Utils {
-
 template<class T>
 class Singleton
 {
@@ -51,7 +48,5 @@ private:
 
 template<class T>
 std::unique_ptr<T> Singleton<T>::_singleton;
-
-}} // Core::Utils
 
 #endif //CAWOTTESRV_SIGNLETON_H

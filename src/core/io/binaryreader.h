@@ -17,9 +17,6 @@
 #include <cstring>
 #include <string>
 
-namespace Core {
-namespace IO {
-
 class BinaryReader
 {
 public:
@@ -56,7 +53,5 @@ private:
     template<class T>
     void read(std::vector<T> &val);
 };
-
-}} // Core::IO
 
 #endif // CAWOTTESRV_BINARYREADER_H

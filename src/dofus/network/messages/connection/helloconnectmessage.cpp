@@ -29,7 +29,7 @@ void HelloConnectMessage::serialize(BinaryWriter& writer)
     writer.writeBytes(key);
 }
 
-bool HelloConnectMessage::deserialize(BinaryReader& reader)
+void HelloConnectMessage::deserialize(BinaryReader& reader)
 {
     salt = reader.readUTF();
     key = reader.readBytes();
