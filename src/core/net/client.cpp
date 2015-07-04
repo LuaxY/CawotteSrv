@@ -29,9 +29,7 @@ Client::Client(StreamSocket clientSocket) :
 
 void Client::run()
 {
-    // Init client here (send hello message)
-
-    std::ifstream keyFile("/root/scratch/CawotteSrv/key/dofus.key", std::ios::binary);
+    std::ifstream keyFile("key/dofus.key", std::ios::binary);
     std::vector<char> key;
     std::copy(std::istreambuf_iterator<char>(keyFile), std::istreambuf_iterator<char>(), std::back_inserter(key));
     std::string salt = Generate::salt(SIZE_OF_SALT);
