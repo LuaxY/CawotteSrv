@@ -16,6 +16,9 @@
 #include <deque>
 #include <cstring>
 #include <string>
+#include <cmath>
+#include "types/int64.h"
+#include "types/uint64.h"
 
 class BinaryReader
 {
@@ -37,11 +40,20 @@ public:
     signed long readLong();
     unsigned long readULong();
     char readByte();
+    unsigned char readUByte();
     std::vector<char> readBytes();
     std::vector<char> readBytes(int length);
     std::string readUTF();
     std::string readUTFBytes(unsigned int length);
     bool readBool();
+    int readVarInt();
+    unsigned int readVarUhInt();
+    short readVarShort();
+    unsigned short readVarUhShort();
+    double readVarLong();
+    double readVarUhLong();
+    Int64 readInt64();
+    UInt64 readUInt64();
 
 private:
     std::vector<char> _buffer;
@@ -52,6 +64,16 @@ private:
 
     template<class T>
     void read(std::vector<T> &val);
+
+    const int INT_SIZE = 32;
+    const int SHORT_SIZE = 16;
+    const int SHORT_MIN_VALUE = -32768;
+    const int SHORT_MAX_VALUE = 32767;
+    const int UNGISNED_SHORT_MAX_VALUE = 65536;
+    const int CHUNK_BIT_SIZE = 7;
+    const int MAX_ENCODING_LENGTH = std::ceil(INT_SIZE / CHUNK_BIT_SIZE);
+    const unsigned char MASK_10000000 = 128;
+    const unsigned char MASK_01111111 = 127;
 };
 
 #endif // CAWOTTESRV_BINARYREADER_H

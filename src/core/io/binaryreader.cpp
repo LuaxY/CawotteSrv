@@ -10,6 +10,7 @@
 //
 
 #include "binaryreader.h"
+#include <stdexcept>
 
 BinaryReader::BinaryReader(const char* buffer, int length) :
     _buffer(buffer, buffer + length),
@@ -117,6 +118,14 @@ char BinaryReader::readByte()
     return value;
 }
 
+unsigned char BinaryReader::readUByte()
+{
+    unsigned char value = _buffer[_index];
+
+    _index++;
+    return value;
+}
+
 std::vector<char> BinaryReader::readBytes()
 {
     int length = readUShort();
@@ -159,6 +168,225 @@ std::string BinaryReader::readUTFBytes(unsigned int length)
 bool BinaryReader::readBool()
 {
     return readByte() == 1;
+}
+
+int BinaryReader::readVarInt()
+{
+    char byte;
+    int value = 0;
+    int offset = 0;
+    bool hasNext;
+
+    do
+    {
+        if (offset > INT_SIZE)
+        {
+            throw std::logic_error("Too much data");
+        }
+
+        byte = readByte();
+        hasNext = ((byte & MASK_10000000) == MASK_10000000);
+
+        if (offset > 0)
+        {
+            value = (value + ((byte & MASK_01111111) << offset));
+        }
+        else
+        {
+            value = (value + (byte & MASK_01111111));
+        }
+
+        offset = offset + CHUNK_BIT_SIZE;
+    }
+    while (hasNext);
+
+    return value;
+}
+
+unsigned int BinaryReader::readVarUhInt()
+{
+    return static_cast<unsigned int>(readVarInt());
+}
+
+short BinaryReader::readVarShort()
+{
+    char byte;
+    short value = 0;
+    int offset = 0;
+    bool hasNext;
+
+    do
+    {
+        if (offset > SHORT_SIZE)
+        {
+            throw std::logic_error("Too much data");
+        }
+
+        byte = readByte();
+        hasNext = ((byte & MASK_10000000) == MASK_10000000);
+
+        if (offset > 0)
+        {
+            value = (value + ((byte & MASK_01111111) << offset));
+        }
+        else
+        {
+            value = (value + (byte & MASK_01111111));
+        }
+
+        offset = offset + CHUNK_BIT_SIZE;
+    }
+    while (hasNext);
+
+    if (value > SHORT_MAX_VALUE)
+    {
+        value = (value - UNGISNED_SHORT_MAX_VALUE);
+    }
+
+    return value;
+}
+
+unsigned short BinaryReader::readVarUhShort()
+{
+    return static_cast<unsigned short>(readVarShort());
+}
+
+double BinaryReader::readVarLong()
+{
+    return readInt64().toNumber();
+}
+
+double BinaryReader::readVarUhLong()
+{
+    return readUInt64().toNumber();
+}
+
+Int64 BinaryReader::readInt64()
+{
+    unsigned char byte;
+    Int64 result;
+    unsigned int i = 0;
+
+    while (true)
+    {
+        byte = readUByte();
+
+        if (i == 28)
+        {
+            break;
+        }
+
+        if (byte >= MASK_10000000)
+        {
+            result.low = result.low | ((byte & MASK_01111111) << i);
+        }
+        else
+        {
+            result.low = result.low | (byte << i);
+            return result;
+        }
+
+        i += 7;
+    }
+
+    if (byte >= MASK_10000000)
+    {
+        byte = (byte & MASK_01111111);
+        result.low = result.low | (byte << i);
+        result.setHigh(static_cast<unsigned int>(byte >> 4));
+    }
+    else
+    {
+        result.low = result.low | (byte << i);
+        result.setHigh(static_cast<unsigned int>(byte >> 4));
+        return result;
+    }
+
+    while (true)
+    {
+        byte = readUByte();
+
+        if (i < 32)
+        {
+            if (byte >= MASK_10000000)
+            {
+                result.setHigh(result.getHigh() | (byte & MASK_01111111));
+            }
+            else
+            {
+                result.setHigh(result.getHigh() | (byte << i));
+                break;
+            }
+        }
+
+        i += 7;
+    }
+
+    return result;
+}
+
+UInt64 BinaryReader::readUInt64()
+{
+    unsigned char byte;
+    UInt64 result;
+    unsigned int i = 0;
+
+    while (true)
+    {
+        byte = readUByte();
+
+        if (i == 28)
+        {
+            break;
+        }
+
+        if (byte >= MASK_10000000)
+        {
+            result.low = result.low | ((byte & MASK_01111111) << i);
+        }
+        else
+        {
+            result.low = result.low | (byte << i);
+            return result;
+        }
+
+        i += 7;
+    }
+
+    if (byte >= MASK_10000000)
+    {
+        byte = (byte & MASK_01111111);
+        result.low = result.low | (byte << i);
+        result.setHigh(static_cast<unsigned int>(byte >> 4));
+    }
+    else
+    {
+        result.low = result.low | (byte << i);
+        result.setHigh(static_cast<unsigned int>(byte >> 4));
+        return result;
+    }
+
+    while (true)
+    {
+        byte = readUByte();
+
+        if (i < 32)
+        {
+            if (byte >= MASK_10000000)
+            {
+                result.setHigh(result.getHigh() | (byte & MASK_01111111));
+            }
+            else
+            {
+                result.setHigh(result.getHigh() | (byte << i));
+                break;
+            }
+        }
+
+        i += 7;
+    }
+
+    return result;
 }
 
 template<class T>
