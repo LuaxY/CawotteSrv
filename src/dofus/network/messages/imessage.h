@@ -14,6 +14,7 @@
 
 #include "core/io/binaryreader.h"
 #include "core/io/binarywriter.h"
+#include "core/utils/booleanbytewrapper.h"
 
 class IMessage
 {
