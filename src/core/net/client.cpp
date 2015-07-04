@@ -10,17 +10,21 @@
 #include "core/utils/generate.h"
 #include <iostream>
 #include <fstream>
+#include "hexdump/hexdump.h"
 
 #include <Poco/Net/SocketStream.h>
-#include <Poco/Thread.h>
+#include <Poco/Net/NetException.h>
 
 #include "dofus/network/messages/connection/helloconnectmessage.h"
 #include "dofus/network/messages/handsake/protocolrequiredmessage.h"
 
 #define SIZE_OF_SALT 32
+#define SIZE_OF_BUFFER 2048
 
 using Poco::Thread;
 using Poco::Net::SocketStream;
+using Poco::FIFOBuffer;
+using Poco::Net::NetException;
 
 Client::Client(StreamSocket clientSocket) :
     _clientSocket(clientSocket)
@@ -29,6 +33,8 @@ Client::Client(StreamSocket clientSocket) :
 
 void Client::run()
 {
+    isRunning = true;
+
     std::ifstream keyFile("key/dofus.key", std::ios::binary);
     std::vector<char> key;
     std::copy(std::istreambuf_iterator<char>(keyFile), std::istreambuf_iterator<char>(), std::back_inserter(key));
@@ -44,10 +50,10 @@ void Client::run()
 
     std::cout << "SEND DATA..." << std::endl << std::flush;
 
-    for (;;)
+    while (isRunning)
     {
-        //_clientSocket.sendBytes("abc", 3);
-        Thread::sleep(1000);
+        receive();
+        //Thread::sleep(1000);
     }
 }
 
@@ -66,4 +72,37 @@ void Client::send(IMessage& message)
     {
         std::cout << e.what() << std::endl;
     }
+}
+
+void Client::receive()
+{
+    try
+    {
+        char buffer[SIZE_OF_BUFFER + 1];
+        int sizeReaded = _clientSocket.receiveBytes(buffer, SIZE_OF_BUFFER);
+
+        if (sizeReaded == 0)
+        {
+            close();
+        }
+        else
+        {
+            // TODO: dispatch message
+            buffer[sizeReaded] = 0;
+            std::cout << "receive " << sizeReaded << " bytes" << std::endl << std::flush;
+            hexdump(buffer, sizeReaded);
+        }
+    }
+    catch (NetException& e)
+    {
+        std::cout << "[" << e.className() << "] " << e.what() << std::endl << std::flush;
+    }
+}
+
+void Client::close()
+{
+    // TODO: log disconnection
+    //_clientSocket.shutdown();
+    _clientSocket.close();
+    isRunning = false;
 }

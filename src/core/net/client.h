@@ -24,9 +24,12 @@ public:
     Client(StreamSocket clientSocket);
     void run();
     void send(IMessage& message);
+    void receive();
+    void close();
 
 private:
     StreamSocket _clientSocket;
+    bool isRunning;
 };
 
 #endif // CAWOTTESRV_CLIENT_H
