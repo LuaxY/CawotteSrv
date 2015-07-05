@@ -47,13 +47,13 @@ std::string IdentificationSuccessMessage::getName()
 void IdentificationSuccessMessage::serialize(BinaryWriter& writer)
 {
     char box0 = 0;
-    BooleanByteWrapper::setFlag(box0, 0, hasRights);
-    BooleanByteWrapper::setFlag(box0, 1, wasAlreadyConnected);
+    box0 = BooleanByteWrapper::setFlag(box0, 0, hasRights);
+    box0 = BooleanByteWrapper::setFlag(box0, 1, wasAlreadyConnected);
     writer.writeByte(box0);
     writer.writeUTF(login);
     writer.writeUTF(nickname);
     writer.writeInt(accountId);
-    writer.writeByte(communityId);
+    writer.writeByte(static_cast<char>(communityId));
     writer.writeUTF(secretQuestion);
     writer.writeDouble(accountCreation);
     writer.writeDouble(subscriptionElapsedDuration);
