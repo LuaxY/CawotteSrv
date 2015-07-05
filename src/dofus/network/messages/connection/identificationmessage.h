@@ -32,7 +32,7 @@ public:
     std::string lang;
     std::vector<char> credentials;
     short serverId;
-    long sessionOptionalSalt;
+    double sessionOptionalSalt;
     std::vector<unsigned short> failedAttempts;
 };
 

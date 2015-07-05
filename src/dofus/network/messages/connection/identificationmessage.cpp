@@ -31,14 +31,14 @@ void IdentificationMessage::serialize(BinaryWriter& writer)
     writer.writeByte(box0);
     version.serialize(writer);
     writer.writeUTF(lang);
-    writer.writeUInt(credentials.size()); // TODO: implement writeVarInt
+    writer.writeVarInt(static_cast<int>(credentials.size()));
     writer.writeBytes(credentials, false);
     writer.writeShort(serverId);
-    writer.writeLong(sessionOptionalSalt); // TODO: implement writeVarLong
-    writer.writeShort(failedAttempts.size());
+    writer.writeVarLong(sessionOptionalSalt);
+    writer.writeShort(static_cast<short>(failedAttempts.size()));
     for (int i = 0; i < failedAttempts.size(); ++i)
     {
-        writer.writeUShort(failedAttempts[i]); // TODO: implement writeVarUhShort
+        writer.writeVarShort(failedAttempts[i]);
     }
 }
 
@@ -50,14 +50,14 @@ void IdentificationMessage::deserialize(BinaryReader& reader)
     useLoginToken = BooleanByteWrapper::getFlag(box0, 2);
     version.deserialize(reader);
     lang = reader.readUTF();
-    unsigned int credentialsLen = reader.readUInt(); // TODO: implement readVarInt
+    int credentialsLen = reader.readVarInt();
     credentials = reader.readBytes(credentialsLen);
     serverId = reader.readShort();
-    sessionOptionalSalt = reader.readLong(); // TODO: implement readVarLong
+    sessionOptionalSalt = reader.readVarLong();
     unsigned int failedAttemptsLen = reader.readUShort();
     for (int i = 0; i < failedAttemptsLen; ++i)
     {
-        unsigned short attempt = reader.readUShort(); // TODO: implement readVarUhShort
+        unsigned short attempt = reader.readVarUhShort();
         failedAttempts.push_back(attempt);
     }
 }
