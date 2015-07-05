@@ -20,7 +20,7 @@
 #include "dofus/network/messages/connection/identificationmessage.h"
 #include "dofus/network/messages/connection/identificationsuccessmessage.h"
 #include "dofus/network/messages/connection/serverlistmessage.h"
-#include "dofus/network/types/connection/gameserverinformations.h"
+#include "dofus/network/enums/serverstatusenum.h"
 
 #define SIZE_OF_SALT 32
 #define SIZE_OF_BUFFER 2048
@@ -113,7 +113,7 @@ void Client::receive()
                         send(ism);
 
                         GameServerInformations jiva;
-                        jiva.initGameServerInformations(1, 1, 0, true, 1);
+                        jiva.initGameServerInformations(1, ServerStatusEnum::ONLINE, 0, true, 1);
                         std::vector<GameServerInformations> serversList;
                         serversList.push_back(jiva);
 
