@@ -25,7 +25,7 @@ std::string VersionExtended::getName()
 }
 void VersionExtended::serialize(BinaryWriter& writer)
 {
-    serialize(writer);
+    Version::serialize(writer);
 
     writer.writeByte(install);
     writer.writeByte(technology);
@@ -33,7 +33,7 @@ void VersionExtended::serialize(BinaryWriter& writer)
 
 void VersionExtended::deserialize(BinaryReader& reader)
 {
-    deserialize(reader);
+    Version::deserialize(reader);
 
     install = reader.readByte();
     technology = reader.readByte();
