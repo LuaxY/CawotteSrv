@@ -7,7 +7,6 @@
 //
 
 #include "packet.h"
-#include <stdexcept>
 
 Packet::Packet()
 {
@@ -15,6 +14,21 @@ Packet::Packet()
 
 Packet::~Packet()
 {
+}
+
+unsigned short Packet::id()
+{
+    return _id;
+}
+
+unsigned int Packet::length()
+{
+    return _length;
+}
+
+std::vector<char> Packet::data()
+{
+    return _data;
 }
 
 void Packet::serialize(IMessage& message, std::vector<char>& buffer)

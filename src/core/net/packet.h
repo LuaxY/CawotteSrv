@@ -22,6 +22,10 @@ public:
     void serialize(IMessage& message, std::vector<char>& buffer);
     bool deserialize(std::vector<char>& buffer);
 
+    unsigned short id();
+    unsigned int length();
+    std::vector<char> data();
+
 private:
     unsigned short _header;
     unsigned short _id;
