@@ -10,6 +10,8 @@
 //
 
 #include "binarywriter.h"
+#include "binaryreader.h"
+#include <stdexcept>
 
 BinaryWriter::BinaryWriter(std::vector<char>& buffer) :
     _index(0),
@@ -20,6 +22,11 @@ BinaryWriter::BinaryWriter(std::vector<char>& buffer) :
 unsigned int BinaryWriter::index()
 {
     return _index;
+}
+
+void BinaryWriter::setIndex(unsigned int index)
+{
+    _index = index;
 }
 
 void BinaryWriter::writeByte(char data)
@@ -105,6 +112,116 @@ void BinaryWriter::writeBool(bool data)
     else
     {
         writeByte(0);
+    }
+}
+
+void BinaryWriter::writeVarInt(int data)
+{
+
+    std::vector<char> byteArray;
+
+    if ((data >= 0) && (data <= MASK_01111111))
+    {
+        byteArray.push_back(static_cast<char>(data));
+        writeBytes(byteArray);
+        return;
+    }
+
+    int c = data;
+    char byte;
+
+    while (c != 0)
+    {
+        byte = static_cast<char>(c & MASK_01111111);
+        c = static_cast<unsigned int>(c >> CHUNK_BIT_SIZE);
+
+        if (c > 0)
+        {
+            byte = byte | MASK_10000000;
+        }
+
+        byteArray.push_back(byte);
+    }
+
+    writeBytes(byteArray);
+}
+
+void BinaryWriter::writeVarShort(short data)
+{
+    if ((data > SHORT_MAX_VALUE) || (data < SHORT_MIN_VALUE))
+    {
+        throw std::logic_error("Forbidden value");
+    }
+
+    std::vector<char> byteArray;
+
+    if ((data >= 0) && (data <= MASK_01111111))
+    {
+        byteArray.push_back(static_cast<char>(data));
+        writeBytes(byteArray);
+        return;
+    }
+
+    int c = data & 0xFFFF;
+    char byte;
+
+    while (c != 0)
+    {
+        byte = static_cast<char>(c & MASK_01111111);
+        c = static_cast<unsigned int>(c >> CHUNK_BIT_SIZE);
+
+        if (c > 0)
+        {
+            byte = byte | MASK_10000000;
+        }
+
+        byteArray.push_back(byte);
+    }
+
+    writeBytes(byteArray);
+
+}
+
+void BinaryWriter::writeVarLong(double data)
+{
+    Int64 val = Int64::fromNumber(data);
+
+    if (val.getHigh() == 0)
+    {
+        writeInt32(val.low);
+    }
+    else
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            writeByte(static_cast<char>(val.low & MASK_01111111));
+            val.low = static_cast<unsigned int>(val.low >> 7);
+        }
+
+        if ((val.getHigh() & (268435455 << 3)) == 0)
+        {
+            writeByte(static_cast<char>(val.getHigh() << 4));
+        }
+        else
+        {
+            writeByte(static_cast<char>((((val.getHigh() << 4) | val.low) & MASK_01111111) | MASK_10000000));
+            writeInt32(static_cast<unsigned int>(val.getHigh() >> 3));
+        }
+    }
+}
+
+void BinaryWriter::writeInt32(unsigned int data)
+{
+    while (true)
+    {
+        if (data < MASK_10000000)
+        {
+            writeByte(static_cast<char>(data));
+            return;
+        }
+
+        writeByte(static_cast<char>((data & MASK_01111111) | MASK_10000000));
+        data = static_cast<unsigned int>(data >> 7);
     }
 }
 
