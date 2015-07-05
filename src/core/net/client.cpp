@@ -17,6 +17,7 @@
 
 #include "dofus/network/messages/connection/helloconnectmessage.h"
 #include "dofus/network/messages/handsake/protocolrequiredmessage.h"
+#include "dofus/network/messages/connection/identificationmessage.h"
 
 #define SIZE_OF_SALT 32
 #define SIZE_OF_BUFFER 2048
@@ -78,19 +79,43 @@ void Client::receive()
 {
     try
     {
-        char buffer[SIZE_OF_BUFFER + 1];
-        int sizeReaded = _clientSocket.receiveBytes(buffer, SIZE_OF_BUFFER);
+        char tmpBuffer[SIZE_OF_BUFFER + 1];
+        int size = _clientSocket.receiveBytes(tmpBuffer, SIZE_OF_BUFFER);
 
-        if (sizeReaded == 0)
+        if (size == 0)
         {
             close();
         }
         else
         {
-            // TODO: dispatch message
-            buffer[sizeReaded] = 0;
-            std::cout << "receive " << sizeReaded << " bytes" << std::endl << std::flush;
-            hexdump(buffer, sizeReaded);
+            Packet packet;
+            std::vector<char> buffer(tmpBuffer, tmpBuffer + size);
+
+            while (packet.deserialize(buffer))
+            {
+                // TODO: dispatch packet
+
+                if (packet.id() == 4)
+                {
+                    try
+                    {
+                        IdentificationMessage im;
+                        BinaryReader reader(packet.data());
+                        im.deserialize(reader);
+
+                        std::cout << "IdentificationMessage " << im.lang << std::endl << std::flush;
+                    }
+                    catch (std::exception& e)
+                    {
+                        std::cout << e.what() << std::endl << std::flush;
+                    }
+                }
+                else
+                {
+                    std::cout << "receive packet id " << packet.id() << ", " << packet.length() << " bytes" << std::endl << std::flush;
+                    hexdump(tmpBuffer, static_cast<unsigned int>(size));
+                }
+            }
         }
     }
     catch (NetException& e)
