@@ -16,8 +16,11 @@
 #include <Poco/Net/NetException.h>
 
 #include "dofus/network/messages/connection/helloconnectmessage.h"
-#include "dofus/network/messages/handsake/protocolrequiredmessage.h"
+#include "dofus/network/messages/handshake/protocolrequiredmessage.h"
 #include "dofus/network/messages/connection/identificationmessage.h"
+#include "dofus/network/messages/connection/identificationsuccessmessage.h"
+#include "dofus/network/messages/connection/serverlistmessage.h"
+#include "dofus/network/types/connection/gameserverinformations.h"
 
 #define SIZE_OF_SALT 32
 #define SIZE_OF_BUFFER 2048
@@ -104,6 +107,19 @@ void Client::receive()
                         im.deserialize(reader);
 
                         std::cout << "IdentificationMessage " << im.lang << std::endl << std::flush;
+
+                        IdentificationSuccessMessage ism;
+                        ism.initIdentificationSuccessMessage("Luax", "Luax", 1, 1, true, "Qui est le plus fort ?");
+                        send(ism);
+
+                        GameServerInformations jiva;
+                        jiva.initGameServerInformations(1, 1, 0, true, 1);
+                        std::vector<GameServerInformations> serversList;
+                        serversList.push_back(jiva);
+
+                        ServerListMessage slm;
+                        slm.initServerListMessage(serversList, 0, true);
+                        send(slm);
                     }
                     catch (std::exception& e)
                     {
