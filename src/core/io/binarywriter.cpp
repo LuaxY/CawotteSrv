@@ -130,6 +130,7 @@ void BinaryWriter::writeVarInt(int data)
     int c = data;
     char byte;
 
+    // TODO: check this shit
     while (c != 0)
     {
         byte = static_cast<char>(c & MASK_01111111);
@@ -140,10 +141,8 @@ void BinaryWriter::writeVarInt(int data)
             byte = byte | MASK_10000000;
         }
 
-        byteArray.push_back(byte);
+        writeByte(byte);
     }
-
-    writeBytes(byteArray);
 }
 
 void BinaryWriter::writeVarShort(short data)
@@ -157,14 +156,14 @@ void BinaryWriter::writeVarShort(short data)
 
     if ((data >= 0) && (data <= MASK_01111111))
     {
-        byteArray.push_back(static_cast<char>(data));
-        writeBytes(byteArray);
+        writeByte(static_cast<char>(data));
         return;
     }
 
     int c = data & 0xFFFF;
     char byte;
 
+    // TODO: check this shit
     while (c != 0)
     {
         byte = static_cast<char>(c & MASK_01111111);
@@ -175,11 +174,8 @@ void BinaryWriter::writeVarShort(short data)
             byte = byte | MASK_10000000;
         }
 
-        byteArray.push_back(byte);
+        writeByte(byte);
     }
-
-    writeBytes(byteArray);
-
 }
 
 void BinaryWriter::writeVarLong(double data)
