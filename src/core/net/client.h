@@ -15,19 +15,22 @@
 #include <Poco/Runnable.h>
 #include <Poco/Net/StreamSocket.h>
 
+class Server;
+
 using Poco::Runnable;
 using Poco::Net::StreamSocket;
 
 class Client : public Runnable
 {
 public:
-    Client(StreamSocket clientSocket);
+    Client(Server& server, StreamSocket clientSocket);
     void run();
     void send(IMessage& message);
     void receive();
     void close();
 
 private:
+    Server& _server;
     StreamSocket _clientSocket;
     bool isRunning;
 };

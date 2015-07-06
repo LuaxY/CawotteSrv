@@ -9,9 +9,16 @@
 #ifndef CAWOTTESRV_AUTH_H
 #define CAWOTTESRV_AUTH_H
 
-class Auth
-{
+#include "core/net/server.h"
+#include "core/net/client.h"
 
+class Auth : public Server
+{
+public:
+    Auth() : Server() { };
+
+    void onNewConnection(Client& client);
+    bool onNewPacket(Client& client, Packet& packet);
 };
 
 #endif //CAWOTTESRV_AUTH_H

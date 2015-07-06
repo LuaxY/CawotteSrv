@@ -9,11 +9,10 @@
 #include "server.h"
 #include <iostream>
 
-Server::Server(std::string ipToBind, ushort portToListen) :
-   _ipToBind(ipToBind),
-   _portToBind(portToListen),
-   _clientThreadPool(1, 100)
+void Server::init(std::string ipToBind, ushort portToListen)
 {
+    _ipToBind = ipToBind;
+    _portToBind = portToListen;
 }
 
 void Server::run()
@@ -32,7 +31,7 @@ void Server::run()
         {
             std::cout << "New client" << std::endl << std::flush;
 
-            std::shared_ptr<Client> client(new Client(peer));
+            std::shared_ptr<Client> client(new Client(*this, peer));
             _clientThreadPool.start(*client);
             _clientList.push_back(client);
         };

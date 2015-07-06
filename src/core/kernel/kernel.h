@@ -9,6 +9,7 @@
 #ifndef CAWOTTESRV_KERNEL_H
 #define CAWOTTESRV_KERNEL_H
 
+#include "core/net/server.h"
 #include "core/utils/singleton.h"
 #include "core/utils/types.h"
 
@@ -24,6 +25,9 @@ public:
     void reset(bool autoRetry = false);
 
 private:
+    Server* createServer(std::string serverMode);
+
+    std::shared_ptr<Server> server;
 };
 
 #endif //CAWOTTESRV_KERNEL_H

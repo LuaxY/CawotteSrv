@@ -7,50 +7,31 @@
 //
 
 #include "client.h"
-#include "core/utils/generate.h"
-#include <iostream>
-#include <fstream>
+#include "server.h"
 #include "hexdump/hexdump.h"
+
+#include <iostream>
 
 #include <Poco/Thread.h>
 #include <Poco/Net/SocketStream.h>
 #include <Poco/Net/NetException.h>
 
-#include "dofus/network/messages/connection/helloconnectmessage.h"
-#include "dofus/network/messages/handshake/protocolrequiredmessage.h"
-#include "dofus/network/messages/connection/identificationmessage.h"
-#include "dofus/network/messages/connection/identificationsuccessmessage.h"
-#include "dofus/network/messages/connection/serverlistmessage.h"
-#include "dofus/network/enums/serverstatusenum.h"
-
-#define SIZE_OF_SALT 32
 #define SIZE_OF_BUFFER 2048
 
 using Poco::Thread;
 using Poco::Net::SocketStream;
 using Poco::Net::NetException;
 
-Client::Client(StreamSocket clientSocket) :
+Client::Client(Server& server, StreamSocket clientSocket) :
+    _server(server),
     _clientSocket(clientSocket)
 {
 }
 
 void Client::run()
 {
+    _server.onNewConnection(*this);
     isRunning = true;
-
-    std::ifstream keyFile("key/dofus.key", std::ios::binary);
-    std::vector<char> key;
-    std::copy(std::istreambuf_iterator<char>(keyFile), std::istreambuf_iterator<char>(), std::back_inserter(key));
-    std::string salt = Generate::salt(SIZE_OF_SALT);
-
-    HelloConnectMessage hcm;
-    hcm.initHelloConnectMessage(salt, key);
-    send(hcm);
-
-    ProtocolRequiredMessage prm;
-    prm.initProtocolRequiredMessage(1645, 1645);
-    send(prm);
 
     std::cout << "SEND DATA..." << std::endl << std::flush;
 
@@ -96,40 +77,10 @@ void Client::receive()
 
             while (packet.deserialize(buffer))
             {
-                // TODO: dispatch packet
-
-                if (packet.id() == 4)
-                {
-                    try
-                    {
-                        IdentificationMessage im;
-                        BinaryReader reader(packet.data());
-                        im.deserialize(reader);
-
-                        std::cout << "IdentificationMessage " << im.lang << std::endl << std::flush;
-
-                        IdentificationSuccessMessage ism;
-                        ism.initIdentificationSuccessMessage("Luax", "Luax", 1, 1, true, "Qui est le plus fort ?");
-                        send(ism);
-
-                        GameServerInformations jiva;
-                        jiva.initGameServerInformations(1, ServerStatusEnum::ONLINE, 0, true, 1);
-                        std::vector<GameServerInformations> serversList;
-                        serversList.push_back(jiva);
-
-                        ServerListMessage slm;
-                        slm.initServerListMessage(serversList, 0, true);
-                        send(slm);
-                    }
-                    catch (std::exception& e)
-                    {
-                        std::cout << e.what() << std::endl << std::flush;
-                    }
-                }
-                else
+                if (!_server.onNewPacket(*this, packet))
                 {
                     std::cout << "receive packet id " << packet.id() << ", " << packet.length() << " bytes" << std::endl << std::flush;
-                    hexdump(tmpBuffer, static_cast<uint>(size));
+                    hexdump(tmpBuffer, size);
                 }
             }
         }

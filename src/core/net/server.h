@@ -29,9 +29,13 @@ using Poco::Net::SocketAddress;
 class Server : public Runnable
 {
 public:
-    Server(std::string ipToBind, ushort portToListen);
+    Server() : _clientThreadPool(1, 100) { }
 
+    void init(std::string ipToBind, ushort portToListen);
     void run();
+
+    virtual void onNewConnection(Client& client) = 0;
+    virtual bool onNewPacket(Client& client, Packet& packet) = 0;
 
 private:
     std::string _ipToBind;
