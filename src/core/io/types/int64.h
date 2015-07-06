@@ -15,16 +15,16 @@
 class Int64 : public Binary64
 {
 public:
-    Int64(unsigned int _low = 0, unsigned int _high = 0);
+    Int64(uint _low = 0, uint _high = 0);
 
     static Int64 fromNumber(double value);
-    static Int64 parseInt64(std::string str, unsigned int radix = 0);
+    static Int64 parseInt64(std::string str, uint radix = 0);
 
-    void setHigh(unsigned int high);
-    unsigned int getHigh();
+    void setHigh(uint high);
+    uint getHigh();
 
     double toNumber();
-    std::string toString(unsigned int radix = 10);
+    std::string toString(uint radix = 10);
 };
 
 

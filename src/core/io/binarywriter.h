@@ -17,25 +17,26 @@
 #include <string>
 #include <vector>
 #include <cmath>
+#include "core/utils/types.h"
 
 using Poco::ByteOrder;
 
 class BinaryWriter
 {
 public:
-    BinaryWriter(std::vector<char>& buffer);
+    BinaryWriter(ByteArray& buffer);
 
     unsigned int index();
-    void setIndex(unsigned int index);
+    void setIndex(uint index);
 
     void writeByte(char data);
-    void writeBytes(std::vector<char> data, bool writeSize = true);
-    void writeShort(signed short data);
-    void writeUShort(unsigned short data);
-    void writeInt(signed int data);
-    void writeUInt(unsigned int data);
-    void writeLong(signed long data);
-    void writeULong(unsigned long data);
+    void writeBytes(ByteArray data, bool writeSize = true);
+    void writeShort(short data);
+    void writeUShort(ushort data);
+    void writeInt(int data);
+    void writeUInt(uint data);
+    void writeLong(long data);
+    void writeULong(ulong data);
     void writeDouble(double data);
     void writeUTF(const char *data);
     void writeUTF(std::string data);
@@ -44,12 +45,12 @@ public:
     void writeVarInt(int data);
     void writeVarShort(short data);
     void writeVarLong(double data);
-    void writeInt32(unsigned int data);
+    void writeInt32(uint data);
 
 
 private:
-    std::vector<char>& _buffer;
-    unsigned int _index;
+    ByteArray& _buffer;
+    uint _index;
 
     template<class T>
     void write(const T& data);
@@ -64,8 +65,8 @@ private:
     const int UNGISNED_SHORT_MAX_VALUE = 65536;
     const int CHUNK_BIT_SIZE = 7;
     const int MAX_ENCODING_LENGTH = std::ceil(INT_SIZE / CHUNK_BIT_SIZE);
-    const unsigned char MASK_10000000 = 128;
-    const unsigned char MASK_01111111 = 127;
+    const uchar MASK_10000000 = 128;
+    const uchar MASK_01111111 = 127;
 };
 
 #endif // CAWOTTESRV_BINARYWRITER_H

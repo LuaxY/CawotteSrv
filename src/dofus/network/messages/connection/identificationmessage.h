@@ -16,7 +16,7 @@ class IdentificationMessage : public IMessage
 {
 public:
     void initIdentificationMessage();
-    unsigned short getId();
+    ushort getId();
     std::string getName();
     void serialize(BinaryWriter& writer);
     void deserialize(BinaryReader& reader);
@@ -33,7 +33,7 @@ public:
     std::vector<char> credentials;
     short serverId;
     double sessionOptionalSalt;
-    std::vector<unsigned short> failedAttempts;
+    std::vector<ushort> failedAttempts;
 };
 
 

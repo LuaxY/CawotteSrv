@@ -14,7 +14,7 @@ void VersionExtended::initVersionExtended(char _install, char _technology)
     technology = _technology;
 }
 
-unsigned short VersionExtended::getId()
+ushort VersionExtended::getId()
 {
     return id;
 }

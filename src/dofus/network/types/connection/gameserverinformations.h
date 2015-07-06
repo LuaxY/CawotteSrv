@@ -15,14 +15,14 @@ class GameServerInformations : public IType
 {
 public:
     void initGameServerInformations(
-        unsigned int _id = 0,
-        unsigned int _status = 1,
-        unsigned int _completion = 0,
+        uint _id = 0,
+        uint _status = 1,
+        uint _completion = 0,
         bool _isSelectable = true,
-        unsigned int _characterCount = 0,
+        uint _characterCount = 0,
         double _date = 0
     );
-    unsigned short getId();
+    ushort getId();
     std::string getName();
     void serialize(BinaryWriter& writer);
     void deserialize(BinaryReader& reader);
@@ -31,11 +31,11 @@ public:
 
     /* VARIABLES */
 
-    unsigned int id;
-    unsigned int status;
-    unsigned int completion;
+    uint id;
+    uint status;
+    uint completion;
     bool isSelectable;
-    unsigned int characterCount;
+    uint characterCount;
     double date;
 };
 

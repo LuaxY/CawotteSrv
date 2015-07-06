@@ -9,7 +9,7 @@
 #include "server.h"
 #include <iostream>
 
-Server::Server(std::string ipToBind, unsigned short portToListen) :
+Server::Server(std::string ipToBind, ushort portToListen) :
    _ipToBind(ipToBind),
    _portToBind(portToListen),
    _clientThreadPool(1, 100)
@@ -28,11 +28,14 @@ void Server::run()
     {
         StreamSocket peer = _serverSocket->acceptConnection();
 
-        std::cout << "New client" << std::endl << std::flush;
+        if (_clientThreadPool.available() > 0)
+        {
+            std::cout << "New client" << std::endl << std::flush;
 
-        std::shared_ptr<Client> client(new Client(peer));
-        _clientThreadPool.start(*client);
-        _clientList.push_back(client);
+            std::shared_ptr<Client> client(new Client(peer));
+            _clientThreadPool.start(*client);
+            _clientList.push_back(client);
+        };
     }
 
     _clientThreadPool.joinAll();

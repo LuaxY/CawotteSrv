@@ -18,7 +18,7 @@ void Version::initVersion(char _major, char _minor, char _release, int _revision
     buildType = _buildType;
 }
 
-unsigned short Version::getId()
+ushort Version::getId()
 {
     return id;
 }

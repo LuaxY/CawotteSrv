@@ -13,7 +13,7 @@
 #include "binaryreader.h"
 #include <stdexcept>
 
-BinaryWriter::BinaryWriter(std::vector<char>& buffer) :
+BinaryWriter::BinaryWriter(ByteArray& buffer) :
     _index(0),
     _buffer(buffer)
 {
@@ -24,7 +24,7 @@ unsigned int BinaryWriter::index()
     return _index;
 }
 
-void BinaryWriter::setIndex(unsigned int index)
+void BinaryWriter::setIndex(uint index)
 {
     _index = index;
 }
@@ -34,42 +34,42 @@ void BinaryWriter::writeByte(char data)
     write(data);
 }
 
-void BinaryWriter::writeBytes(std::vector<char> data, bool writeSize)
+void BinaryWriter::writeBytes(ByteArray data, bool writeSize)
 {
     write(data, writeSize);
 }
 
-void BinaryWriter::writeShort(signed short data)
+void BinaryWriter::writeShort(short data)
 {
     data = ByteOrder::toBigEndian(data);
     write(data);
 }
 
-void BinaryWriter::writeUShort(unsigned short data)
+void BinaryWriter::writeUShort(ushort data)
 {
     data = ByteOrder::toBigEndian(data);
     write(data);
 }
 
-void BinaryWriter::writeInt(signed int data)
+void BinaryWriter::writeInt(int data)
 {
     data = ByteOrder::toBigEndian(data);
     write(data);
 }
 
-void BinaryWriter::writeUInt(unsigned int data)
+void BinaryWriter::writeUInt(uint data)
 {
     data = ByteOrder::toBigEndian(data);
     write(data);
 }
 
-void BinaryWriter::writeLong(signed long data)
+void BinaryWriter::writeLong(long data)
 {
     data = ByteOrder::toBigEndian(data);
     write(data);
 }
 
-void BinaryWriter::writeULong(unsigned long data)
+void BinaryWriter::writeULong(ulong data)
 {
     data = ByteOrder::toBigEndian(data);
     write(data);
@@ -134,7 +134,7 @@ void BinaryWriter::writeVarInt(int data)
     while (c != 0)
     {
         byte = static_cast<char>(c & MASK_01111111);
-        c = static_cast<unsigned int>(c >> CHUNK_BIT_SIZE);
+        c = static_cast<uint>(c >> CHUNK_BIT_SIZE);
 
         if (c > 0)
         {
@@ -167,7 +167,7 @@ void BinaryWriter::writeVarShort(short data)
     while (c != 0)
     {
         byte = static_cast<char>(c & MASK_01111111);
-        c = static_cast<unsigned int>(c >> CHUNK_BIT_SIZE);
+        c = static_cast<uint>(c >> CHUNK_BIT_SIZE);
 
         if (c > 0)
         {
@@ -191,7 +191,7 @@ void BinaryWriter::writeVarLong(double data)
         for (int i = 0; i < 4; i++)
         {
             writeByte(static_cast<char>(val.low & MASK_01111111));
-            val.low = static_cast<unsigned int>(val.low >> 7);
+            val.low = static_cast<uint>(val.low >> 7);
         }
 
         if ((val.getHigh() & (268435455 << 3)) == 0)
@@ -201,12 +201,12 @@ void BinaryWriter::writeVarLong(double data)
         else
         {
             writeByte(static_cast<char>((((val.getHigh() << 4) | val.low) & MASK_01111111) | MASK_10000000));
-            writeInt32(static_cast<unsigned int>(val.getHigh() >> 3));
+            writeInt32(static_cast<uint>(val.getHigh() >> 3));
         }
     }
 }
 
-void BinaryWriter::writeInt32(unsigned int data)
+void BinaryWriter::writeInt32(uint data)
 {
     while (true)
     {
@@ -217,7 +217,7 @@ void BinaryWriter::writeInt32(unsigned int data)
         }
 
         writeByte(static_cast<char>((data & MASK_01111111) | MASK_10000000));
-        data = static_cast<unsigned int>(data >> 7);
+        data = static_cast<uint>(data >> 7);
     }
 }
 
@@ -225,7 +225,7 @@ template<class T>
 void BinaryWriter::write(const T& data)
 {
     const char* bytes = reinterpret_cast<const char*>(&data);
-    unsigned short size = static_cast<unsigned short>(sizeof(T));
+    ushort size = static_cast<ushort>(sizeof(T));
 
     if (bytes == nullptr || size == 0)
     {
@@ -245,7 +245,7 @@ template<class T>
 void BinaryWriter::write(const std::vector<T>& data, bool writeSize)
 {
     const char* bytes = reinterpret_cast<const char*>(&data[0]);
-    unsigned short size = static_cast<unsigned short>(data.size());
+    ushort size = static_cast<ushort>(data.size());
 
     if (writeSize)
     {

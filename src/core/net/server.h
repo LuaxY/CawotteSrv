@@ -18,6 +18,7 @@
 #include <Poco/Net/ServerSocket.h>
 
 #include "client.h"
+#include "core/utils/types.h"
 
 using Poco::ThreadPool;
 using Poco::Runnable;
@@ -28,13 +29,13 @@ using Poco::Net::SocketAddress;
 class Server : public Runnable
 {
 public:
-    Server(std::string ipToBind, unsigned short portToListen);
+    Server(std::string ipToBind, ushort portToListen);
 
     void run();
 
 private:
     std::string _ipToBind;
-    unsigned short _portToBind;
+    ushort _portToBind;
     std::unique_ptr<ServerSocket> _serverSocket;
     ThreadPool _clientThreadPool;
     std::vector<std::shared_ptr<Client>> _clientList;

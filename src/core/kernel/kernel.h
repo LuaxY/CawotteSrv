@@ -10,6 +10,7 @@
 #define CAWOTTESRV_KERNEL_H
 
 #include "core/utils/singleton.h"
+#include "core/utils/types.h"
 
 class Kernel : public Singleton<Kernel>
 {
@@ -19,7 +20,7 @@ public:
     void initFrames();
     void initCache();
 
-    void panic(unsigned int errorId = 0);
+    void panic(uint errorId = 0);
     void reset(bool autoRetry = false);
 
 private:

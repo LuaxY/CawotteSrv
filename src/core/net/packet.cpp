@@ -16,29 +16,29 @@ Packet::~Packet()
 {
 }
 
-unsigned short Packet::id()
+ushort Packet::id()
 {
     return _id;
 }
 
-unsigned int Packet::length()
+uint Packet::length()
 {
     return _length;
 }
 
-std::vector<char> Packet::data()
+ByteArray Packet::data()
 {
     return _data;
 }
 
-void Packet::serialize(IMessage& message, std::vector<char>& buffer)
+void Packet::serialize(IMessage& message, ByteArray& buffer)
 {
     BinaryWriter writer(buffer);
     BinaryWriter messageWriter(_data);
     message.serialize(messageWriter);
 
     _id = message.getId();
-    _length = static_cast<unsigned int>(_data.size());
+    _length = static_cast<uint>(_data.size());
     _lengthType = computeLengthType(_length);
     _header = computeHeader(_id, _lengthType);
 
@@ -55,7 +55,7 @@ void Packet::serialize(IMessage& message, std::vector<char>& buffer)
             writer.writeByte(static_cast<char>(_length));
             break;
         case 2:
-            writer.writeUShort(static_cast<unsigned short>(_length));
+            writer.writeUShort(static_cast<ushort>(_length));
             break;
         case 3:
             // TODO: Write for 3 bytes length
@@ -67,7 +67,7 @@ void Packet::serialize(IMessage& message, std::vector<char>& buffer)
     writer.writeBytes(_data, false);
 }
 
-bool Packet::deserialize(std::vector<char>& buffer)
+bool Packet::deserialize(ByteArray& buffer)
 {
     _header = 0;
     _id = 0;
@@ -76,7 +76,7 @@ bool Packet::deserialize(std::vector<char>& buffer)
     _data.clear();
 
     BinaryReader reader(buffer);
-    unsigned int countReadedBytes = 0;
+    uint countReadedBytes = 0;
 
     if (reader.bytesAvailable() < sizeof(_header))
     {
@@ -109,30 +109,30 @@ bool Packet::deserialize(std::vector<char>& buffer)
     return true;
 }
 
-unsigned short Packet::getMessageId(unsigned short header)
+ushort Packet::getMessageId(ushort header)
 {
     return header >> 2;
 }
 
-unsigned short Packet::getMessageLengthType(unsigned short header)
+ushort Packet::getMessageLengthType(ushort header)
 {
-    return static_cast<unsigned short>(header & 3);
+    return static_cast<ushort>(header & 3);
 }
 
-unsigned int Packet::getMessageLength(unsigned short lengthType, BinaryReader& reader)
+uint Packet::getMessageLength(ushort lengthType, BinaryReader& reader)
 {
-    unsigned int length = 0;
+    uint length = 0;
 
     switch(lengthType)
     {
         case 1:
-            length = static_cast<unsigned int>(reader.readByte());
+            length = static_cast<uint>(reader.readByte());
             break;
         case 2:
             length = reader.readUShort();
             break;
         case 3:
-            length = static_cast<unsigned int>(
+            length = static_cast<uint>(
                         ((reader.readByte() & 255) << 16) +
                         ((reader.readByte() & 255) << 8) +
                          (reader.readByte() & 255));
@@ -144,7 +144,7 @@ unsigned int Packet::getMessageLength(unsigned short lengthType, BinaryReader& r
     return length;
 }
 
-unsigned short Packet::computeLengthType(unsigned int length)
+ushort Packet::computeLengthType(uint length)
 {
     if (length > 65535)
         return 3;
@@ -156,7 +156,7 @@ unsigned short Packet::computeLengthType(unsigned int length)
     return 0;
 }
 
-unsigned short Packet::computeHeader(unsigned short id, unsigned short lengthType)
+ushort Packet::computeHeader(ushort id, ushort lengthType)
 {
     return id << 2 | lengthType;
 }

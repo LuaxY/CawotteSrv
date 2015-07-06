@@ -14,8 +14,8 @@
 class ProtocolRequiredMessage : public IMessage
 {
 public:
-    void initProtocolRequiredMessage(unsigned int _requiredVersion, unsigned int _currentVersion);
-    unsigned short getId();
+    void initProtocolRequiredMessage(uint _requiredVersion, uint _currentVersion);
+    ushort getId();
     std::string getName();
     void serialize(BinaryWriter& writer);
     void deserialize(BinaryReader& reader);
@@ -24,8 +24,8 @@ public:
 
     /* VARIABLES */
 
-    unsigned int requiredVersion;
-    unsigned int currentVersion;
+    uint requiredVersion;
+    uint currentVersion;
 };
 
 

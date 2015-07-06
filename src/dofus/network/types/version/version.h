@@ -15,7 +15,7 @@ class Version : public IType
 {
 public:
     void initVersion(char _major, char _minor, char _release, int _revision, char _patch, char _buildType);
-    unsigned short getId();
+    ushort getId();
     std::string getName();
     void serialize(BinaryWriter& writer);
     void deserialize(BinaryReader& reader);

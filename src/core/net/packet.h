@@ -19,25 +19,25 @@ public:
     Packet();
     ~Packet();
 
-    void serialize(IMessage& message, std::vector<char>& buffer);
-    bool deserialize(std::vector<char>& buffer);
+    void serialize(IMessage& message, ByteArray& buffer);
+    bool deserialize(ByteArray& buffer);
 
-    unsigned short id();
-    unsigned int length();
-    std::vector<char> data();
+    ushort id();
+    uint length();
+    ByteArray data();
 
 private:
-    unsigned short _header;
-    unsigned short _id;
-    unsigned short _lengthType;
-    unsigned int _length;
-    std::vector<char> _data;
+    ushort _header;
+    ushort _id;
+    ushort _lengthType;
+    uint _length;
+    ByteArray _data;
 
-    unsigned short getMessageId(unsigned short header);
-    unsigned short getMessageLengthType(unsigned short header);
-    unsigned int getMessageLength(unsigned short lengthType, BinaryReader& reader);
-    unsigned short computeLengthType(unsigned int length);
-    unsigned short computeHeader(unsigned short id, unsigned short lengthType);
+    ushort getMessageId(ushort header);
+    ushort getMessageLengthType(ushort header);
+    uint getMessageLength(ushort lengthType, BinaryReader& reader);
+    ushort computeLengthType(uint length);
+    ushort computeHeader(ushort id, ushort lengthType);
 };
 
 #endif // CAWOTTESRV_PACKET_H

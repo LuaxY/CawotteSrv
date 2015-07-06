@@ -12,6 +12,7 @@
 #include <fstream>
 #include "hexdump/hexdump.h"
 
+#include <Poco/Thread.h>
 #include <Poco/Net/SocketStream.h>
 #include <Poco/Net/NetException.h>
 
@@ -27,7 +28,6 @@
 
 using Poco::Thread;
 using Poco::Net::SocketStream;
-using Poco::FIFOBuffer;
 using Poco::Net::NetException;
 
 Client::Client(StreamSocket clientSocket) :
@@ -129,7 +129,7 @@ void Client::receive()
                 else
                 {
                     std::cout << "receive packet id " << packet.id() << ", " << packet.length() << " bytes" << std::endl << std::flush;
-                    hexdump(tmpBuffer, static_cast<unsigned int>(size));
+                    hexdump(tmpBuffer, static_cast<uint>(size));
                 }
             }
         }

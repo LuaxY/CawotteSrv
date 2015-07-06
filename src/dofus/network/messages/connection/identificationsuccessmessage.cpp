@@ -12,8 +12,8 @@
 void IdentificationSuccessMessage::initIdentificationSuccessMessage(
         std::string _login,
         std::string _nickname,
-        unsigned int _accountId,
-        unsigned int _communityId,
+        uint _accountId,
+        uint _communityId,
         bool _hasRights,
         std::string _secretQuestion,
         double _accountCreation,
@@ -34,7 +34,7 @@ void IdentificationSuccessMessage::initIdentificationSuccessMessage(
     wasAlreadyConnected = _wasAlreadyConnected;
 }
 
-unsigned short IdentificationSuccessMessage::getId()
+ushort IdentificationSuccessMessage::getId()
 {
     return id;
 }

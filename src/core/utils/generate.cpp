@@ -21,29 +21,29 @@ const std::string Generate::_saltCharset = "0123456789"
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
         "abcdefghijklmnopqrstuvwxyz";
 
-std::string Generate::ticket(unsigned short length)
+std::string Generate::ticket(ushort length)
 {
     return randomString(length, _ticketCharset);
 }
 
-std::string Generate::salt(unsigned short length)
+std::string Generate::salt(ushort length)
 {
     return randomString(length, _saltCharset);
 }
 
-int Generate::random(unsigned short min, unsigned short max)
+int Generate::random(ushort min, ushort max)
 {
     std::uniform_int_distribution<> rand(min, max);
     return rand(_generator);
 }
 
-std::string Generate::randomString(unsigned short length, const std::string charset)
+std::string Generate::randomString(ushort length, const std::string charset)
 {
     std::string randomString;
 
     for (int i = 0; i < length; ++i)
     {
-        unsigned int rand = random(0, static_cast<unsigned short>(charset.length() - 1));
+        int rand = random(0, static_cast<ushort>(charset.length() - 1));
         randomString += charset[rand];
     }
 

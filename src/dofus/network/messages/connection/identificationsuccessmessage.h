@@ -18,8 +18,8 @@ public:
     void initIdentificationSuccessMessage(
         std::string _login = "",
         std::string _nickname = "",
-        unsigned int _accountId = 0,
-        unsigned int _communityId = 0,
+        uint _accountId = 0,
+        uint _communityId = 0,
         bool _hasRights = false,
         std::string _secretQuestion = "",
         double _accountCreation = 0,
@@ -28,7 +28,7 @@ public:
         bool _wasAlreadyConnected = 0
     );
 
-    unsigned short getId();
+    ushort getId();
     std::string getName();
     void serialize(BinaryWriter& writer);
     void deserialize(BinaryReader& reader);
@@ -39,8 +39,8 @@ public:
 
     std::string login;
     std::string nickname;
-    unsigned int accountId;
-    unsigned int communityId;
+    uint accountId;
+    uint communityId;
     bool hasRights;
     std::string secretQuestion;
     double accountCreation;

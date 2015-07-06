@@ -20,7 +20,7 @@ void Kernel::init()
 
     Server server(
             Config::instance().getString("auth_server.host", "0.0.0.0"),
-            static_cast<unsigned short>(Config::instance().getInt("auth_server.port", 5555)));
+            static_cast<ushort>(Config::instance().getInt("auth_server.port", 5555)));
 
     Thread serverThread;
     serverThread.start(server);
@@ -52,7 +52,7 @@ void Kernel::initCache()
 
 }
 
-void Kernel::panic(unsigned int errorId)
+void Kernel::panic(uint errorId)
 {
 
 }

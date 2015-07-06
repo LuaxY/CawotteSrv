@@ -8,36 +8,36 @@
 
 #include "binary64.h"
 
-Binary64::Binary64(unsigned int _low, unsigned int _high)
+Binary64::Binary64(uint _low, uint _high)
 {
     low = _low;
     internalHigh = _high;
 }
 
-unsigned int Binary64::div(unsigned int n)
+uint Binary64::div(uint n)
 {
-    unsigned int modHigh = internalHigh % n;
-    unsigned int mod = ((low % n) + (modHigh * 6)) % n;
+    uint modHigh = internalHigh % n;
+    uint mod = ((low % n) + (modHigh * 6)) % n;
     internalHigh = internalHigh / n;
     double newLow = ((modHigh * 4294967296) + low) / n;
-    internalHigh = internalHigh + static_cast<unsigned int>(newLow / 4294967296);
-    low = newLow;
+    internalHigh = internalHigh + static_cast<uint>(newLow / 4294967296);
+    low = static_cast<uint>(newLow);
     return mod;
 }
 
-void Binary64::mul(unsigned int n)
+void Binary64::mul(uint n)
 {
     double newLow = static_cast<double>(low * n);
     internalHigh = internalHigh * n;
-    internalHigh = internalHigh + static_cast<unsigned int>(newLow / 4294967296);
+    internalHigh = internalHigh + static_cast<uint>(newLow / 4294967296);
     low = low * n;
 }
 
-void Binary64::add(unsigned int n)
+void Binary64::add(uint n)
 {
     double newLow = static_cast<double>(low + n);
-    internalHigh = internalHigh + static_cast<unsigned int>(newLow / 4294967296);
-    low = newLow;
+    internalHigh = internalHigh + static_cast<uint>(newLow / 4294967296);
+    low = static_cast<uint>(newLow);
 }
 
 void Binary64::bitWiseNot()

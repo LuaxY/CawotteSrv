@@ -10,28 +10,28 @@
 #include <stdexcept>
 #include <cmath>
 
-Int64::Int64(unsigned int _low, unsigned int _high) :
+Int64::Int64(uint _low, uint _high) :
     Binary64(_low, _high)
 {
 }
 
 Int64 Int64::fromNumber(double value)
 {
-    return Int64(value, std::floor(value / 4294967296));
+    return Int64(static_cast<uint>(value), static_cast<uint>(std::floor(value / 4294967296)));
 }
 
-Int64 Int64::parseInt64(std::string str, unsigned int radix)
+Int64 Int64::parseInt64(std::string str, uint radix)
 {
     throw std::logic_error("function not implemented");
     return Int64();
 }
 
-void Int64::setHigh(unsigned int high)
+void Int64::setHigh(uint high)
 {
     internalHigh = high;
 }
 
-unsigned int Int64::getHigh()
+uint Int64::getHigh()
 {
     return internalHigh;
 }
@@ -41,7 +41,7 @@ double Int64::toNumber()
     return (getHigh() * 4294967296) + low;
 }
 
-std::string Int64::toString(unsigned int radix)
+std::string Int64::toString(uint radix)
 {
     throw std::logic_error("function not implemented");
     return "";

@@ -13,7 +13,7 @@ void IdentificationMessage::initIdentificationMessage()
 
 }
 
-unsigned short IdentificationMessage::getId()
+ushort IdentificationMessage::getId()
 {
     return id;
 }
@@ -54,10 +54,10 @@ void IdentificationMessage::deserialize(BinaryReader& reader)
     credentials = reader.readBytes(credentialsLen);
     serverId = reader.readShort();
     sessionOptionalSalt = reader.readVarLong();
-    unsigned int failedAttemptsLen = reader.readUShort();
+    uint failedAttemptsLen = reader.readUShort();
     for (int i = 0; i < failedAttemptsLen; ++i)
     {
-        unsigned short attempt = reader.readVarUhShort();
+        ushort attempt = reader.readVarUhShort();
         failedAttempts.push_back(attempt);
     }
 }

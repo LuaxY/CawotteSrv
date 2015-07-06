@@ -18,7 +18,7 @@ BinaryReader::BinaryReader(const char* buffer, int length) :
 {
 }
 
-BinaryReader::BinaryReader(const std::vector<char> buffer) :
+BinaryReader::BinaryReader(const ByteArray buffer) :
     _buffer(buffer),
     _index(0)
 {
@@ -31,7 +31,7 @@ BinaryReader::BinaryReader(const std::deque<char> buffer) :
     std::copy(buffer.begin(), buffer.end(), std::back_inserter(_buffer));
 }
 
-bool BinaryReader::setIndex(unsigned int index)
+bool BinaryReader::setIndex(uint index)
 {
     if (index <= _buffer.size())
     {
@@ -68,44 +68,44 @@ void BinaryReader::readBytes(uint8_t* bytes, size_t count)
     _index += count;
 }
 
-signed short BinaryReader::readShort()
+short BinaryReader::readShort()
 {
-    signed short value = 0;
+    short value = 0;
     read(value);
     return value;
 }
 
-unsigned short BinaryReader::readUShort()
+ushort BinaryReader::readUShort()
 {
-    unsigned short value = 0;
+    ushort value = 0;
     read(value);
     return value;
 }
 
-signed int BinaryReader::readInt()
+int BinaryReader::readInt()
 {
-    signed int value = 0;
+    int value = 0;
     read(value);
     return value;
 }
 
-unsigned int BinaryReader::readUInt()
+uint BinaryReader::readUInt()
 {
-    unsigned int value = 0;
+    uint value = 0;
     read(value);
     return value;
 }
 
-signed long BinaryReader::readLong()
+long BinaryReader::readLong()
 {
-    signed int value = 0;
+    long value = 0;
     read(value);
     return value;
 }
 
-unsigned long BinaryReader::readULong()
+ulong BinaryReader::readULong()
 {
-    unsigned int value = 0;
+    ulong value = 0;
     read(value);
     return value;
 }
@@ -118,19 +118,19 @@ char BinaryReader::readByte()
     return value;
 }
 
-unsigned char BinaryReader::readUByte()
+uchar BinaryReader::readUByte()
 {
-    unsigned char value = _buffer[_index];
+    uchar value = static_cast<uchar>(_buffer[_index]);
 
     _index++;
     return value;
 }
 
-std::vector<char> BinaryReader::readBytes()
+ByteArray BinaryReader::readBytes()
 {
     int length = readUShort();
 
-    std::vector<char> value;
+    ByteArray value;
 
     for (int i = 0; i < length; i++)
         value.push_back(_buffer[_index + i]);
@@ -140,9 +140,9 @@ std::vector<char> BinaryReader::readBytes()
     return value;
 }
 
-std::vector<char> BinaryReader::readBytes(int length)
+ByteArray BinaryReader::readBytes(int length)
 {
-    std::vector<char> value;
+    ByteArray value;
 
     for (int i = 0; i < length; i++)
         value.push_back(_buffer[_index + i]);
@@ -154,14 +154,14 @@ std::vector<char> BinaryReader::readBytes(int length)
 
 std::string BinaryReader::readUTF()
 {
-    unsigned short len = readUShort();
+    ushort len = readUShort();
     std::vector<char> data = readBytes(len);
     return std::string(data.begin(), data.end());
 }
 
-std::string BinaryReader::readUTFBytes(unsigned int length)
+std::string BinaryReader::readUTFBytes(uint length)
 {
-    std::vector<char> data = readBytes(length);
+    ByteArray data = readBytes(length);
     return std::string(data.begin(), data.end());
 }
 
@@ -203,9 +203,9 @@ int BinaryReader::readVarInt()
     return value;
 }
 
-unsigned int BinaryReader::readVarUhInt()
+uint BinaryReader::readVarUhInt()
 {
-    return static_cast<unsigned int>(readVarInt());
+    return static_cast<uint>(readVarInt());
 }
 
 short BinaryReader::readVarShort()
@@ -240,15 +240,15 @@ short BinaryReader::readVarShort()
 
     if (value > SHORT_MAX_VALUE)
     {
-        value = (value - UNGISNED_SHORT_MAX_VALUE);
+        value = static_cast<short>(value - UNGISNED_SHORT_MAX_VALUE);
     }
 
     return value;
 }
 
-unsigned short BinaryReader::readVarUhShort()
+ushort BinaryReader::readVarUhShort()
 {
-    return static_cast<unsigned short>(readVarShort());
+    return static_cast<ushort>(readVarShort());
 }
 
 double BinaryReader::readVarLong()
@@ -263,9 +263,9 @@ double BinaryReader::readVarUhLong()
 
 Int64 BinaryReader::readInt64()
 {
-    unsigned char byte;
+    uchar byte;
     Int64 result;
-    unsigned int i = 0;
+    uint i = 0;
 
     while (true)
     {
@@ -293,12 +293,12 @@ Int64 BinaryReader::readInt64()
     {
         byte = (byte & MASK_01111111);
         result.low = result.low | (byte << i);
-        result.setHigh(static_cast<unsigned int>(byte >> 4));
+        result.setHigh(static_cast<uint>(byte >> 4));
     }
     else
     {
         result.low = result.low | (byte << i);
-        result.setHigh(static_cast<unsigned int>(byte >> 4));
+        result.setHigh(static_cast<uint>(byte >> 4));
         return result;
     }
 
@@ -327,9 +327,9 @@ Int64 BinaryReader::readInt64()
 
 UInt64 BinaryReader::readUInt64()
 {
-    unsigned char byte;
+    uchar byte;
     UInt64 result;
-    unsigned int i = 0;
+    uint i = 0;
 
     while (true)
     {
@@ -357,12 +357,12 @@ UInt64 BinaryReader::readUInt64()
     {
         byte = (byte & MASK_01111111);
         result.low = result.low | (byte << i);
-        result.setHigh(static_cast<unsigned int>(byte >> 4));
+        result.setHigh(static_cast<uint>(byte >> 4));
     }
     else
     {
         result.low = result.low | (byte << i);
-        result.setHigh(static_cast<unsigned int>(byte >> 4));
+        result.setHigh(static_cast<uint>(byte >> 4));
         return result;
     }
 

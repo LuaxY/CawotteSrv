@@ -14,8 +14,8 @@
 class HelloConnectMessage : public IMessage
 {
 public:
-    void initHelloConnectMessage(std::string _salt, std::vector<char> _key);
-    unsigned short getId();
+    void initHelloConnectMessage(std::string _salt, ByteArray _key);
+    ushort getId();
     std::string getName();
     void serialize(BinaryWriter& writer);
     void deserialize(BinaryReader& reader);
@@ -25,7 +25,7 @@ public:
     /* VARIABLES */
 
     std::string salt;
-    std::vector<char> key;
+    ByteArray key;
 };
 
 #endif //CAWOTTESRV_HELLOCONNECTMESSAGE_H

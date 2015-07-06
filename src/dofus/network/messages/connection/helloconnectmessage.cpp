@@ -8,13 +8,13 @@
 
 #include "helloconnectmessage.h"
 
-void HelloConnectMessage::initHelloConnectMessage(std::string _salt, std::vector<char> _key)
+void HelloConnectMessage::initHelloConnectMessage(std::string _salt, ByteArray _key)
 {
     salt = _salt;
     key = _key;
 }
 
-unsigned short HelloConnectMessage::getId()
+ushort HelloConnectMessage::getId()
 {
     return id;
 }

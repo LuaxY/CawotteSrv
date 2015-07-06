@@ -15,7 +15,7 @@ class VersionExtended : public Version
 {
 public:
     void initVersionExtended(char _install, char _technology);
-    unsigned short getId();
+    ushort getId();
     std::string getName();
     void serialize(BinaryWriter& writer);
     void deserialize(BinaryReader& reader);

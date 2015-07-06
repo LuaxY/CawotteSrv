@@ -10,7 +10,7 @@
 
 void ServerListMessage::initServerListMessage(
         std::vector<GameServerInformations> _servers,
-        unsigned int _alreadyConnectedToServerId,
+        uint _alreadyConnectedToServerId,
         bool _canCreateNewCharacter
 )
 {
@@ -19,7 +19,7 @@ void ServerListMessage::initServerListMessage(
     canCreateNewCharacter = _canCreateNewCharacter;
 }
 
-unsigned short ServerListMessage::getId()
+ushort ServerListMessage::getId()
 {
     return id;
 }

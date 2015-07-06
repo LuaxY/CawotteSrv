@@ -19,45 +19,46 @@
 #include <cmath>
 #include "types/int64.h"
 #include "types/uint64.h"
+#include "core/utils/types.h"
 
 class BinaryReader
 {
 public:
     BinaryReader(const char* buffer, int length);
-    BinaryReader(const std::vector<char> buffer);
+    BinaryReader(const ByteArray buffer);
     BinaryReader(const std::deque<char> buffer);
 
-    bool setIndex(unsigned int index);
-    unsigned int index();
+    bool setIndex(uint index);
+    uint index();
     int bytesAvailable();
     void reverseBytes(uint8_t* bytes, size_t count);
     void readBytes(uint8_t* bytes, size_t count);
 
-    signed short readShort();
-    unsigned short readUShort();
-    signed int readInt();
-    unsigned int readUInt();
-    signed long readLong();
-    unsigned long readULong();
+    short readShort();
+    ushort readUShort();
+    int readInt();
+    uint readUInt();
+    long readLong();
+    ulong readULong();
     char readByte();
-    unsigned char readUByte();
-    std::vector<char> readBytes();
-    std::vector<char> readBytes(int length);
+    uchar readUByte();
+    ByteArray readBytes();
+    ByteArray readBytes(int length);
     std::string readUTF();
-    std::string readUTFBytes(unsigned int length);
+    std::string readUTFBytes(uint length);
     bool readBool();
     int readVarInt();
-    unsigned int readVarUhInt();
+    uint readVarUhInt();
     short readVarShort();
-    unsigned short readVarUhShort();
+    ushort readVarUhShort();
     double readVarLong();
     double readVarUhLong();
     Int64 readInt64();
     UInt64 readUInt64();
 
 private:
-    std::vector<char> _buffer;
-    unsigned int _index;
+    ByteArray _buffer;
+    uint _index;
 
     template<class T>
     void read(T &val);
@@ -72,8 +73,8 @@ private:
     const int UNGISNED_SHORT_MAX_VALUE = 65536;
     const int CHUNK_BIT_SIZE = 7;
     const int MAX_ENCODING_LENGTH = std::ceil(INT_SIZE / CHUNK_BIT_SIZE);
-    const unsigned char MASK_10000000 = 128;
-    const unsigned char MASK_01111111 = 127;
+    const uchar MASK_10000000 = 128;
+    const uchar MASK_01111111 = 127;
 };
 
 #endif // CAWOTTESRV_BINARYREADER_H

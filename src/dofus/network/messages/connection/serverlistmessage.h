@@ -17,11 +17,11 @@ class ServerListMessage : public IMessage
 public:
     void initServerListMessage(
         std::vector<GameServerInformations> _servers,
-        unsigned int _alreadyConnectedToServerId = 0,
+        uint _alreadyConnectedToServerId = 0,
         bool _canCreateNewCharacter = true
     );
 
-    unsigned short getId();
+    ushort getId();
     std::string getName();
     void serialize(BinaryWriter& writer);
     void deserialize(BinaryReader& reader);
@@ -31,7 +31,7 @@ public:
     /* VARIABLES */
 
     std::vector<GameServerInformations> servers;
-    unsigned int alreadyConnectedToServerId;
+    uint alreadyConnectedToServerId;
     bool canCreateNewCharacter;
 };
 

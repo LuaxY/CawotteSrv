@@ -8,13 +8,13 @@
 
 #include "protocolrequiredmessage.h"
 
-void ProtocolRequiredMessage::initProtocolRequiredMessage(unsigned int _requiredVersion, unsigned int _currentVersion)
+void ProtocolRequiredMessage::initProtocolRequiredMessage(uint _requiredVersion, uint _currentVersion)
 {
     requiredVersion = _requiredVersion;
     currentVersion = _currentVersion;
 }
 
-unsigned short ProtocolRequiredMessage::getId()
+ushort ProtocolRequiredMessage::getId()
 {
     return id;
 }

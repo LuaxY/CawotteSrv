@@ -9,11 +9,11 @@
 #include "gameserverinformations.h"
 
 void GameServerInformations::initGameServerInformations(
-    unsigned int _id,
-    unsigned int _status,
-    unsigned int _completion,
+    uint _id,
+    uint _status,
+    uint _completion,
     bool _isSelectable,
-    unsigned int _characterCount,
+    uint _characterCount,
     double _date
 )
 {
@@ -25,7 +25,7 @@ void GameServerInformations::initGameServerInformations(
     date = _date;
 }
 
-unsigned short GameServerInformations::getId()
+ushort GameServerInformations::getId()
 {
     return __id;
 }
