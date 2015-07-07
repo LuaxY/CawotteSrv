@@ -17,8 +17,12 @@ class Auth : public Server
 public:
     Auth() : Server() { };
 
+    void init(std::string ipToBind, ushort portToListen);
     void onNewConnection(Client& client);
     bool onNewPacket(Client& client, Packet& packet);
+
+private:
+    std::vector<char> _key;
 };
 
 #endif //CAWOTTESRV_AUTH_H

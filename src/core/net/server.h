@@ -31,7 +31,7 @@ class Server : public Runnable
 public:
     Server() : _clientThreadPool(1, 100) { }
 
-    void init(std::string ipToBind, ushort portToListen);
+    virtual void init(std::string ipToBind, ushort portToListen);
     void run();
 
     virtual void onNewConnection(Client& client) = 0;

@@ -80,7 +80,7 @@ void Client::receive()
                 if (!_server.onNewPacket(*this, packet))
                 {
                     std::cout << "receive packet id " << packet.id() << ", " << packet.length() << " bytes" << std::endl << std::flush;
-                    hexdump(tmpBuffer, size);
+                    hexdump(tmpBuffer, static_cast<uint>(size));
                 }
             }
         }

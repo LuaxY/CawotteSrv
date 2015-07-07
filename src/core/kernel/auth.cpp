@@ -19,17 +19,24 @@
 #include "dofus/network/messages/connection/serverlistmessage.h"
 #include "dofus/network/enums/serverstatusenum.h"
 
+#include "dofus/frames/connection/authentificationframe.h"
+
 #define SIZE_OF_SALT 32
+
+void Auth::init(std::string ipToBind, ushort portToListen)
+{
+    Server::init(ipToBind, portToListen);
+
+    std::ifstream keyFile("key/dofus.key", std::ios::binary);
+    std::copy(std::istreambuf_iterator<char>(keyFile), std::istreambuf_iterator<char>(), std::back_inserter(_key));
+}
 
 void Auth::onNewConnection(Client& client)
 {
-    std::ifstream keyFile("key/dofus.key", std::ios::binary);
-    std::vector<char> key;
-    std::copy(std::istreambuf_iterator<char>(keyFile), std::istreambuf_iterator<char>(), std::back_inserter(key));
     std::string salt = Generate::salt(SIZE_OF_SALT);
 
     HelloConnectMessage hcm;
-    hcm.initHelloConnectMessage(salt, key);
+    hcm.initHelloConnectMessage(salt, _key);
     client.send(hcm);
 
     ProtocolRequiredMessage prm;
@@ -41,7 +48,23 @@ bool Auth::onNewPacket(Client& client, Packet& packet)
 {
     // TODO: dispatch packet
 
-    if (packet.id() == 4)
+    /**
+     * foreach frame in framesList
+     * {
+     *    if frame.process(client, packet)
+     *        break;
+     * }
+     **/
+
+    AuthentificationFrame af;
+    af.registerMessages();
+
+    if (af.process(client, packet))
+    {
+        return true;
+    }
+
+    /*if (packet.id() == 4)
     {
         try
         {
@@ -49,7 +72,7 @@ bool Auth::onNewPacket(Client& client, Packet& packet)
             BinaryReader reader(packet.data());
             im.deserialize(reader);
 
-            std::cout << "IdentificationMessage " << im.lang << std::endl << std::flush;
+            //std::cout << "IdentificationMessage " << im.lang << std::endl << std::flush;
 
             IdentificationSuccessMessage ism;
             ism.initIdentificationSuccessMessage("Luax", "Luax", 1, 1, true, "Qui est le plus fort ?");
@@ -70,7 +93,7 @@ bool Auth::onNewPacket(Client& client, Packet& packet)
         }
 
         return true;
-    }
+    }*/
 
     return false;
 }
