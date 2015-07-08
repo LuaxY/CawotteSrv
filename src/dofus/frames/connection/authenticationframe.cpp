@@ -13,9 +13,6 @@
 #include "dofus/network/messages/connection/serverlistmessage.h"
 #include "dofus/network/enums/serverstatusenum.h"
 
-using std::placeholders::_1;
-using std::placeholders::_2;
-
 uint AuthenticationFrame::getPriority()
 {
     return 10;

@@ -16,6 +16,9 @@
 #include <map>
 #include <functional>
 
+using std::placeholders::_1;
+using std::placeholders::_2;
+
 class Frame
 {
 public:
