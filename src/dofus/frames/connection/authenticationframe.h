@@ -16,10 +16,14 @@
 class AuthenticationFrame : public Frame
 {
 public:
+    uint getPriority();
+    std::string getName();
     void registerMessages();
 
 private:
     void onIdentificationMessage(Client& client, std::shared_ptr<IdentificationMessage> message);
+
+    uint _priority = 10;
 };
 
 

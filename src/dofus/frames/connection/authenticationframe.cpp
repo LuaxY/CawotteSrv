@@ -16,6 +16,16 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
+uint AuthenticationFrame::getPriority()
+{
+    return 10;
+}
+
+std::string AuthenticationFrame::getName()
+{
+    return "AuthenticationFrame";
+}
+
 void AuthenticationFrame::registerMessages()
 {
     registerMessage<IdentificationMessage>(IdentificationMessage::id, std::bind(&AuthenticationFrame::onIdentificationMessage, this, _1, _2));
@@ -23,9 +33,7 @@ void AuthenticationFrame::registerMessages()
 
 void AuthenticationFrame::onIdentificationMessage(Client& client, std::shared_ptr<IdentificationMessage> message)
 {
-    std::cout << message->lang << " " << message->serverId << std::endl << std::flush;
-
-    /**********************************/
+    //std::cout << message->lang << " " << message->serverId << std::endl << std::flush;
 
     IdentificationSuccessMessage ism;
     ism.initIdentificationSuccessMessage("Luax", "Luax", 1, 1, true, "Qui est le plus fort ?");

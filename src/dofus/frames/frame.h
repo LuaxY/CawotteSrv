@@ -19,8 +19,8 @@
 class Frame
 {
 public:
-    //uint getPriority();
-    //virtual std::string getName() = 0;
+    virtual uint getPriority() = 0;
+    virtual std::string getName() = 0;
     bool process(Client& client, uint id, BinaryReader& reader);
     virtual void registerMessages() = 0;
 

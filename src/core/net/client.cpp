@@ -12,7 +12,6 @@
 
 #include <iostream>
 
-#include <Poco/Thread.h>
 #include <Poco/Net/SocketStream.h>
 #include <Poco/Net/NetException.h>
 
@@ -33,12 +32,9 @@ void Client::run()
     _server.onNewConnection(*this);
     isRunning = true;
 
-    std::cout << "SEND DATA..." << std::endl << std::flush;
-
     while (isRunning)
     {
         receive();
-        //Thread::sleep(1000);
     }
 }
 
@@ -52,6 +48,9 @@ void Client::send(IMessage& message)
         packet.serialize(message, buffer);
 
         _clientSocket.sendBytes(buffer.data(), static_cast<int>(buffer.size()));
+
+        std::cout << "[" << toString() << "] [SND] " <<
+            message.getName() << " (" << message.getId() << ")" << std::endl << std::flush;
     }
     catch (std::exception& e)
     {
@@ -97,4 +96,9 @@ void Client::close()
     //_clientSocket.shutdown();
     _clientSocket.close();
     isRunning = false;
+}
+
+std::string Client::toString()
+{
+    return _clientSocket.peerAddress().toString();
 }

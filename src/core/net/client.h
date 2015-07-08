@@ -28,6 +28,7 @@ public:
     void send(IMessage& message);
     void receive();
     void close();
+    std::string toString();
 
 private:
     Server& _server;
