@@ -35,8 +35,6 @@ void Kernel::init()
     Thread serverThread;
     serverThread.start(*server.get());
     serverThread.join();
-
-    initFrames();
 }
 
 void Kernel::initConfiguration()
@@ -50,11 +48,6 @@ void Kernel::initConfiguration()
     {
         std::cout << e.what() << std::endl;
     }
-}
-
-void Kernel::initFrames()
-{
-
 }
 
 void Kernel::initCache()

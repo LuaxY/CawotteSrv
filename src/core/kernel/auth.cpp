@@ -14,12 +14,7 @@
 
 #include "dofus/network/messages/connection/helloconnectmessage.h"
 #include "dofus/network/messages/handshake/protocolrequiredmessage.h"
-#include "dofus/network/messages/connection/identificationmessage.h"
-#include "dofus/network/messages/connection/identificationsuccessmessage.h"
-#include "dofus/network/messages/connection/serverlistmessage.h"
-#include "dofus/network/enums/serverstatusenum.h"
-
-#include "dofus/frames/connection/authentificationframe.h"
+#include "dofus/frames/connection/authenticationframe.h"
 
 #define SIZE_OF_SALT 32
 
@@ -29,6 +24,18 @@ void Auth::init(std::string ipToBind, ushort portToListen)
 
     std::ifstream keyFile("key/dofus.key", std::ios::binary);
     std::copy(std::istreambuf_iterator<char>(keyFile), std::istreambuf_iterator<char>(), std::back_inserter(_key));
+
+    initFrames();
+}
+
+void Auth::initFrames()
+{
+    _frameList.push_back(new AuthenticationFrame);
+
+    for (Frame* frame : _frameList)
+    {
+        frame->registerMessages();
+    }
 }
 
 void Auth::onNewConnection(Client& client)
@@ -46,54 +53,15 @@ void Auth::onNewConnection(Client& client)
 
 bool Auth::onNewPacket(Client& client, Packet& packet)
 {
-    // TODO: dispatch packet
+    BinaryReader reader(packet.data());
 
-    /**
-     * foreach frame in framesList
-     * {
-     *    if frame.process(client, packet)
-     *        break;
-     * }
-     **/
-
-    AuthentificationFrame af;
-    af.registerMessages();
-
-    if (af.process(client, packet))
+    for (Frame* frame : _frameList)
     {
-        return true;
+        if (frame->process(client, packet.id(), reader))
+        {
+            return true;
+        }
     }
-
-    /*if (packet.id() == 4)
-    {
-        try
-        {
-            IdentificationMessage im;
-            BinaryReader reader(packet.data());
-            im.deserialize(reader);
-
-            //std::cout << "IdentificationMessage " << im.lang << std::endl << std::flush;
-
-            IdentificationSuccessMessage ism;
-            ism.initIdentificationSuccessMessage("Luax", "Luax", 1, 1, true, "Qui est le plus fort ?");
-            client.send(ism);
-
-            GameServerInformations jiva;
-            jiva.initGameServerInformations(1, ServerStatusEnum::ONLINE, 0, true, 1);
-            std::vector<GameServerInformations> serversList;
-            serversList.push_back(jiva);
-
-            ServerListMessage slm;
-            slm.initServerListMessage(serversList, 0, true);
-            client.send(slm);
-        }
-        catch (std::exception& e)
-        {
-            std::cout << e.what() << std::endl << std::flush;
-        }
-
-        return true;
-    }*/
 
     return false;
 }

@@ -18,7 +18,6 @@ class Kernel : public Singleton<Kernel>
 public:
     void init();
     void initConfiguration();
-    void initFrames();
     void initCache();
 
     void panic(uint errorId = 0);

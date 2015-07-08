@@ -11,6 +11,7 @@
 
 #include "core/net/server.h"
 #include "core/net/client.h"
+#include "dofus/frames/frame.h"
 
 class Auth : public Server
 {
@@ -23,6 +24,9 @@ public:
 
 private:
     std::vector<char> _key;
+    std::vector<Frame*> _frameList;
+
+    void initFrames();
 };
 
 #endif //CAWOTTESRV_AUTH_H

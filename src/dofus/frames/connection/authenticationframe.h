@@ -9,15 +9,17 @@
 #ifndef CAWOTTESRV_AUTHENTIFICATIONFRAME_H
 #define CAWOTTESRV_AUTHENTIFICATIONFRAME_H
 
-#include "dofus/frames/iframe.h"
+#include "dofus/frames/frame.h"
 
-class AuthentificationFrame : public IFrame
+#include "dofus/network/messages/connection/identificationmessage.h"
+
+class AuthenticationFrame : public Frame
 {
 public:
     void registerMessages();
 
 private:
-    bool onIdentificationMessage(Client& client, Packet& packet);
+    void onIdentificationMessage(Client& client, std::shared_ptr<IdentificationMessage> message);
 };
 
 
