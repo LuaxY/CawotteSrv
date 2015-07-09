@@ -12,6 +12,7 @@ add_definitions(-DCawotteSrv_MAJOR=${CawotteSrv_MAJOR})
 add_definitions(-DCawotteSrv_MINOR=${CawotteSrv_MINOR})
 add_definitions(-DCawotteSrv_PATCH=${CawotteSrv_PATCH})
 
+find_package(LibEvent)
 find_package(Poco REQUIRED Net Crypto)
 include_directories(${Poco_INCLUDE_DIRS})
 link_directories(${Poco_LIBRARY_DIRS})
@@ -24,4 +25,4 @@ file(COPY config/cawotte.ini DESTINATION config/cawotte.ini)
 file(COPY key/dofus.key DESTINATION key/dofus.key)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
-target_link_libraries(${PROJECT_NAME} ${Poco_Foundation_LIBRARY} ${Poco_Util_LIBRARY} ${Poco_Net_LIBRARY} ${Poco_Crypto_LIBRARY})
+target_link_libraries(${PROJECT_NAME} ${Poco_Foundation_LIBRARY} ${Poco_Util_LIBRARY} ${Poco_Net_LIBRARY} ${Poco_Crypto_LIBRARY} ${LIBEVENT_LIB})

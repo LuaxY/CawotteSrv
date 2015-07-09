@@ -19,23 +19,17 @@
 
 #define SIZE_OF_BUFFER 2048
 
-Client::Client(StreamSocket& clientSocket, SocketReactor& reactor) :
+using Poco::NObserver;
+
+Client::Client(StreamSocket& clientSocket) :
     _clientSocket(clientSocket),
-    _reactor(reactor),
     _gameMode(Kernel::instance().gameMode())
 {
-    NObserver<Client, ReadableNotification> readObserver(*this, &Client::onReadable);
-    NObserver<Client, WritableNotification> writeObserver(*this, &Client::onWritable);
-    NObserver<Client, ShutdownNotification> shutdownObserver(*this, &Client::onShutdown);
-
-    _reactor.addEventHandler(_clientSocket, readObserver);
-    _reactor.addEventHandler(_clientSocket, writeObserver);
-    _reactor.addEventHandler(_clientSocket, shutdownObserver);
 
     _gameMode->onNewClient(*this);
 }
 
-void Client::onReadable(const AutoPtr<ReadableNotification>& notification)
+void Client::onReadable()
 {
     try
     {
@@ -67,12 +61,12 @@ void Client::onReadable(const AutoPtr<ReadableNotification>& notification)
     }
 }
 
-void Client::onWritable(const AutoPtr<WritableNotification>& notification)
+void Client::onWritable()
 {
 
 }
 
-void Client::onShutdown(const AutoPtr<ShutdownNotification>& notification)
+void Client::onShutdown()
 {
     close();
 }

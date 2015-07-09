@@ -13,32 +13,28 @@
 
 #include <memory>
 
-#include <Poco/AutoPtr.h>
 #include <Poco/Net/StreamSocket.h>
-#include <Poco/Net/SocketNotification.h>
 
 class GameMode;
 
 class Server;
 
-using namespace Poco;
 using namespace Poco::Net;
 
 class Client
 {
 public:
-    Client(StreamSocket& clientSocket, SocketReactor& reactor);
+    Client(StreamSocket& clientSocket);
     void send(IMessage& message);
     void close();
     std::string toString();
 
 private:
-    void onReadable(const AutoPtr<ReadableNotification>& notification);
-    void onWritable(const AutoPtr<WritableNotification>& notification);
-    void onShutdown(const AutoPtr<ShutdownNotification>& notification);
+    void onReadable();
+    void onWritable();
+    void onShutdown();
 
     StreamSocket& _clientSocket;
-    SocketReactor& _reactor;
     GameMode* _gameMode;
 };
 

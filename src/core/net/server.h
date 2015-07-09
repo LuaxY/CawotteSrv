@@ -12,6 +12,7 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <event2/event.h>
 
 #include <Poco/Thread.h>
 #include <Poco/Net/ServerSocket.h>
@@ -22,23 +23,14 @@
 #include "core/utils/types.h"
 #include "core/utils/singleton.h"
 
-using namespace Poco;
+using Poco::Thread;
 using namespace Poco::Net;
 
 class Server
 {
 public:
     void init(std::string ipToBind, ushort portToListen);
-    void run()
-    {
-        SocketAcceptor<Client> acceptor(*_serverSocket, _reactor);
-
-        Thread thread;
-        thread.start(_reactor);
-
-        thread.join();
-        _reactor.stop();
-    }
+    void run();
 
 private:
     std::string _ipToBind;
