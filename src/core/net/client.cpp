@@ -8,34 +8,73 @@
 
 #include "client.h"
 #include "server.h"
+#include "core/kernel/kernel.h"
 #include "hexdump/hexdump.h"
 
 #include <iostream>
 
 #include <Poco/Net/SocketStream.h>
 #include <Poco/Net/NetException.h>
+#include <Poco/NObserver.h>
 
 #define SIZE_OF_BUFFER 2048
 
-using Poco::Thread;
-using Poco::Net::SocketStream;
-using Poco::Net::NetException;
-
-Client::Client(Server& server, StreamSocket clientSocket) :
-    _server(server),
-    _clientSocket(clientSocket)
+Client::Client(StreamSocket& clientSocket, SocketReactor& reactor) :
+    _clientSocket(clientSocket),
+    _reactor(reactor),
+    _gameMode(Kernel::instance().gameMode())
 {
+    NObserver<Client, ReadableNotification> readObserver(*this, &Client::onReadable);
+    NObserver<Client, WritableNotification> writeObserver(*this, &Client::onWritable);
+    NObserver<Client, ShutdownNotification> shutdownObserver(*this, &Client::onShutdown);
+
+    _reactor.addEventHandler(_clientSocket, readObserver);
+    _reactor.addEventHandler(_clientSocket, writeObserver);
+    _reactor.addEventHandler(_clientSocket, shutdownObserver);
+
+    _gameMode->onNewClient(*this);
 }
 
-void Client::run()
+void Client::onReadable(const AutoPtr<ReadableNotification>& notification)
 {
-    _server.onNewConnection(*this);
-    isRunning = true;
-
-    while (isRunning)
+    try
     {
-        receive();
+        char tmpBuffer[SIZE_OF_BUFFER + 1];
+        int size = _clientSocket.receiveBytes(tmpBuffer, SIZE_OF_BUFFER);
+
+        if (size == 0)
+        {
+            close();
+        }
+        else
+        {
+            Packet packet;
+            std::vector<char> buffer(tmpBuffer, tmpBuffer + size);
+
+            while (packet.deserialize(buffer))
+            {
+                if (!_gameMode->onNewPacket(*this, packet))
+                {
+                    std::cout << "receive packet id " << packet.id() << ", " << packet.length() << " bytes" << std::endl << std::flush;
+                    hexdump(tmpBuffer, static_cast<uint>(size));
+                }
+            }
+        }
     }
+    catch (NetException& e)
+    {
+        std::cout << "[" << e.className() << "] " << e.what() << std::endl << std::flush;
+    }
+}
+
+void Client::onWritable(const AutoPtr<WritableNotification>& notification)
+{
+
+}
+
+void Client::onShutdown(const AutoPtr<ShutdownNotification>& notification)
+{
+    close();
 }
 
 void Client::send(IMessage& message)
@@ -58,44 +97,10 @@ void Client::send(IMessage& message)
     }
 }
 
-void Client::receive()
-{
-    try
-    {
-        char tmpBuffer[SIZE_OF_BUFFER + 1];
-        int size = _clientSocket.receiveBytes(tmpBuffer, SIZE_OF_BUFFER);
-
-        if (size == 0)
-        {
-            close();
-        }
-        else
-        {
-            Packet packet;
-            std::vector<char> buffer(tmpBuffer, tmpBuffer + size);
-
-            while (packet.deserialize(buffer))
-            {
-                if (!_server.onNewPacket(*this, packet))
-                {
-                    std::cout << "receive packet id " << packet.id() << ", " << packet.length() << " bytes" << std::endl << std::flush;
-                    hexdump(tmpBuffer, static_cast<uint>(size));
-                }
-            }
-        }
-    }
-    catch (NetException& e)
-    {
-        std::cout << "[" << e.className() << "] " << e.what() << std::endl << std::flush;
-    }
-}
-
 void Client::close()
 {
-    // TODO: log disconnection
-    //_clientSocket.shutdown();
+    std::cout << "[" << toString() << "] client disconnected"  << std::endl << std::flush;
     _clientSocket.close();
-    isRunning = false;
 }
 
 std::string Client::toString()

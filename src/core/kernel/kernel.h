@@ -9,9 +9,9 @@
 #ifndef CAWOTTESRV_KERNEL_H
 #define CAWOTTESRV_KERNEL_H
 
-#include "core/net/server.h"
 #include "core/utils/singleton.h"
 #include "core/utils/types.h"
+#include "core/gamemode/gamemode.h"
 
 class Kernel : public Singleton<Kernel>
 {
@@ -20,13 +20,14 @@ public:
     void initConfiguration();
     void initCache();
 
+    GameMode* gameMode();
     void panic(uint errorId = 0);
     void reset(bool autoRetry = false);
 
 private:
-    Server* createServer(std::string serverMode);
+    GameMode* _gameMode;
 
-    std::shared_ptr<Server> server;
+    void createGameMode(std::string gameMode);
 };
 
 #endif //CAWOTTESRV_KERNEL_H

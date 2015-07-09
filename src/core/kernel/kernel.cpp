@@ -8,33 +8,31 @@
 
 #include "kernel.h"
 #include "core/config/config.h"
-#include "auth.h"
-#include <iostream>
+#include "core/net/server.h"
+#include "core/gamemode/auth.h"
 
-using Poco::Thread;
+#include <iostream>
 
 void Kernel::init()
 {
     initConfiguration();
     initCache();
 
-    std::string serverMode = "auth";
-
-    server.reset(createServer(serverMode));
-    if (server == nullptr)
+    try
     {
-        // TODO: log this shit
-        throw std::logic_error("no game server mode found");
+        createGameMode("auth");
+    }
+    catch (std::exception& e)
+    {
+        std::cout << e.what() << std::endl << std::flush;
     }
 
     std::string host = Config::instance().getString("auth_server.host", "0.0.0.0");
     ushort port = static_cast<ushort>(Config::instance().getInt("auth_server.port", 5555));
 
-    server->init(host, port);
-
-    Thread serverThread;
-    serverThread.start(*server.get());
-    serverThread.join();
+    Server server;
+    server.init(host, port);
+    server.run();
 }
 
 void Kernel::initConfiguration()
@@ -65,10 +63,16 @@ void Kernel::reset(bool autoRetry)
 
 }
 
-Server* Kernel::createServer(std::string serverMode)
+void Kernel::createGameMode(std::string gameMode)
 {
-    if (serverMode == "auth")  return new Auth();
-    //if (serverMode == "world") return new World();
+    if (gameMode == "auth") { _gameMode = new Auth(); return; }
+    //if (gameMode == "world") { _gameMode.reset(new World); return; }
 
-    return nullptr;
+    throw std::logic_error("game mode not found");
+}
+
+
+GameMode* Kernel::gameMode()
+{
+    return _gameMode;
 }

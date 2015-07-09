@@ -2,7 +2,7 @@
 // auth.cpp
 // CawotteSrv
 //
-// Created by Luax on 7/1/15.
+// Created by Luax on 7/9/15.
 // Copyright (c) 2015 Luax. All rights reserved.
 //
 
@@ -18,9 +18,9 @@
 
 #define SIZE_OF_SALT 32
 
-void Auth::init(std::string ipToBind, ushort portToListen)
+Auth::Auth()
 {
-    Server::init(ipToBind, portToListen);
+    std::cout << "Auth" << std::endl << std::flush;
 
     std::ifstream keyFile("key/dofus.key", std::ios::binary);
     std::copy(std::istreambuf_iterator<char>(keyFile), std::istreambuf_iterator<char>(), std::back_inserter(_key));
@@ -32,14 +32,13 @@ void Auth::initFrames()
 {
     _frameList.push_back(new AuthenticationFrame);
 
-    for (Frame* frame : _frameList)
-    {
-        frame->registerMessages();
-    }
+    loadFrames();
 }
 
-void Auth::onNewConnection(Client& client)
+void Auth::onNewClient(Client& client)
 {
+    _clientList.push_back(client);
+
     std::string salt = Generate::salt(SIZE_OF_SALT);
 
     HelloConnectMessage hcm;
@@ -47,21 +46,6 @@ void Auth::onNewConnection(Client& client)
     client.send(hcm);
 
     ProtocolRequiredMessage prm;
-    prm.initProtocolRequiredMessage(1645, 1645);
+    prm.initProtocolRequiredMessage(1645, 1645); // current, required
     client.send(prm);
-}
-
-bool Auth::onNewPacket(Client& client, Packet& packet)
-{
-    BinaryReader reader(packet.data());
-
-    for (Frame* frame : _frameList)
-    {
-        if (frame->process(client, packet.id(), reader))
-        {
-            return true;
-        }
-    }
-
-    return false;
 }

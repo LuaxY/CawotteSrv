@@ -10,30 +10,36 @@
 #define CAWOTTESRV_CLIENT_H
 
 #include "packet.h"
+
 #include <memory>
 
-#include <Poco/Runnable.h>
+#include <Poco/AutoPtr.h>
 #include <Poco/Net/StreamSocket.h>
+#include <Poco/Net/SocketNotification.h>
+
+class GameMode;
 
 class Server;
 
-using Poco::Runnable;
-using Poco::Net::StreamSocket;
+using namespace Poco;
+using namespace Poco::Net;
 
-class Client : public Runnable
+class Client
 {
 public:
-    Client(Server& server, StreamSocket clientSocket);
-    void run();
+    Client(StreamSocket& clientSocket, SocketReactor& reactor);
     void send(IMessage& message);
-    void receive();
     void close();
     std::string toString();
 
 private:
-    Server& _server;
-    StreamSocket _clientSocket;
-    bool isRunning;
+    void onReadable(const AutoPtr<ReadableNotification>& notification);
+    void onWritable(const AutoPtr<WritableNotification>& notification);
+    void onShutdown(const AutoPtr<ShutdownNotification>& notification);
+
+    StreamSocket& _clientSocket;
+    SocketReactor& _reactor;
+    GameMode* _gameMode;
 };
 
 #endif // CAWOTTESRV_CLIENT_H
