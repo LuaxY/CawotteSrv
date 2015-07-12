@@ -25,7 +25,7 @@ std::string AuthenticationFrame::getName()
 
 void AuthenticationFrame::registerMessages()
 {
-    registerMessage<IdentificationMessage>(IdentificationMessage::id, std::bind(&AuthenticationFrame::onIdentificationMessage, this, _1, _2));
+    register_message(IdentificationMessage, AuthenticationFrame::onIdentificationMessage);
 }
 
 void AuthenticationFrame::onIdentificationMessage(Client& client, std::shared_ptr<IdentificationMessage> message)

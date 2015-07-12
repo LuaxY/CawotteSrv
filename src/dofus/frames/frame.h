@@ -34,8 +34,9 @@ protected:
     using Message  = std::function<std::shared_ptr<IMessage>()>;
 
     template<class T>
-    void registerMessage(uint id, Function<T> function)
+    void registerMessage(Function<T> function)
     {
+        uint id = T::id;
         _handlers[id] = createHandler(function);
         _messages[id] = createMessage<T>();
     }
@@ -62,5 +63,7 @@ private:
         };
     }
 };
+
+#define register_message(message, handler) registerMessage<message>(std::bind(&handler), this, _1, _2);
 
 #endif // CAWOTTESRV_IFRAME_H
