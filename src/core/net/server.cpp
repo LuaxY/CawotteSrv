@@ -55,7 +55,7 @@ void Server::run()
 
     //event_new(base, _serverSocket.soc)
 
-    event_base_set(base, )
+    //event_base_set(base, )
 
     // free event base
     event_base_free(base);

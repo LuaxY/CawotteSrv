@@ -64,6 +64,6 @@ private:
     }
 };
 
-#define register_message(message, handler) registerMessage<message>(std::bind(&handler), this, _1, _2);
+#define register_message(message, handler) registerMessage<message>(std::bind(&handler, this, _1, _2));
 
 #endif // CAWOTTESRV_IFRAME_H
