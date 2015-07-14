@@ -21,12 +21,10 @@
 
 using Poco::NObserver;
 
-Client::Client(StreamSocket& clientSocket) :
+Client::Client(Socket& clientSocket, GameMode* gameMode) :
     _clientSocket(clientSocket),
-    _gameMode(Kernel::instance().gameMode())
+    _gameMode(gameMode)
 {
-
-    _gameMode->onNewClient(*this);
 }
 
 void Client::onReadable()
@@ -34,7 +32,7 @@ void Client::onReadable()
     try
     {
         char tmpBuffer[SIZE_OF_BUFFER + 1];
-        int size = _clientSocket.receiveBytes(tmpBuffer, SIZE_OF_BUFFER);
+        int size = 1; // _clientSocket.receiveBytes(tmpBuffer, SIZE_OF_BUFFER);
 
         if (size == 0)
         {
@@ -55,7 +53,7 @@ void Client::onReadable()
             }
         }
     }
-    catch (NetException& e)
+    catch (Poco::Net::NetException& e)
     {
         std::cout << "[" << e.className() << "] " << e.what() << std::endl << std::flush;
     }
@@ -80,7 +78,7 @@ void Client::send(IMessage& message)
 
         packet.serialize(message, buffer);
 
-        _clientSocket.sendBytes(buffer.data(), static_cast<int>(buffer.size()));
+        // _clientSocket.sendBytes(buffer.data(), static_cast<int>(buffer.size()));
 
         std::cout << "[" << toString() << "] [SND] " <<
             message.getName() << " (" << message.getId() << ")" << std::endl << std::flush;
@@ -99,5 +97,5 @@ void Client::close()
 
 std::string Client::toString()
 {
-    return _clientSocket.peerAddress().toString();
+    return _clientSocket.toString();
 }

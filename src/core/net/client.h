@@ -10,21 +10,18 @@
 #define CAWOTTESRV_CLIENT_H
 
 #include "packet.h"
+#include "socket.h"
 
 #include <memory>
 
-#include <Poco/Net/StreamSocket.h>
 
 class GameMode;
-
 class Server;
-
-using namespace Poco::Net;
 
 class Client
 {
 public:
-    Client(StreamSocket& clientSocket);
+    Client(Socket& clientSocket, GameMode* gameMode);
     void send(IMessage& message);
     void close();
     std::string toString();
@@ -34,7 +31,7 @@ private:
     void onWritable();
     void onShutdown();
 
-    StreamSocket& _clientSocket;
+    Socket& _clientSocket;
     GameMode* _gameMode;
 };
 

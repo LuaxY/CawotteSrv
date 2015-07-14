@@ -14,30 +14,24 @@
 #include <vector>
 #include <event2/event.h>
 
-#include <Poco/Thread.h>
-#include <Poco/Net/ServerSocket.h>
-#include <Poco/Net/SocketReactor.h>
-#include <Poco/Net/SocketAcceptor.h>
-
 #include "client.h"
+#include "serversocket.h"
 #include "core/utils/types.h"
 #include "core/utils/singleton.h"
-
-using Poco::Thread;
-using namespace Poco::Net;
 
 class Server
 {
 public:
-    void init(std::string ipToBind, ushort portToListen);
+    void init(std::string ipToBind, ushort portToListen, GameMode* gameMode);
     void run();
 
 private:
     std::string _ipToBind;
-    ushort _portToBind;
+    ushort _portToListen;
     ServerSocket* _serverSocket;
-    SocketReactor _reactor;
-    bool _isRunning;
+    GameMode* _gameMode;
+
+    static void loop(int sockfd, short eventType, void* arg);
 };
 
 #endif // CAWOTTESRV_SERVER_H

@@ -31,8 +31,8 @@ void Kernel::init()
     ushort port = static_cast<ushort>(Config::instance().getInt("auth_server.port", 5555));
 
     Server server;
-    server.init(host, port);
-    server.run();
+    server.init(host, port, _gameMode);
+    server.run(); // WARN: blocking function !!
 }
 
 void Kernel::initConfiguration()
