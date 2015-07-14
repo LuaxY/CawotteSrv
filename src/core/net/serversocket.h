@@ -11,12 +11,6 @@
 
 #include "socket.h"
 
-/*
- * server;
- * init /w ip + pot
- * listen
- */
-
 class ServerSocket : public Socket
 {
 public:

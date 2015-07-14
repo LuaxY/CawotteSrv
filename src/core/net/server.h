@@ -12,12 +12,12 @@
 #include <string>
 #include <memory>
 #include <vector>
-#include <event2/event.h>
 
 #include "client.h"
 #include "serversocket.h"
 #include "core/utils/types.h"
 #include "core/utils/singleton.h"
+#include "core/event/eventbase.h"
 
 class Server
 {
@@ -30,6 +30,7 @@ private:
     ushort _portToListen;
     ServerSocket* _serverSocket;
     GameMode* _gameMode;
+    EventBase* _eventBase;
 
     static void loop(int sockfd, short eventType, void* arg);
 };

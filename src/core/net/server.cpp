@@ -9,8 +9,6 @@
 #include "server.h"
 
 #include <iostream>
-#include <event2/event_struct.h>
-#include <core/kernel/kernel.h>
 
 void Server::init(std::string ipToBind, ushort portToListen, GameMode* gameMode)
 {
@@ -34,7 +32,6 @@ void Server::loop(int /*sockfd*/, short eventType, void* arg)
     {
         Socket clientSocket = pThis->_serverSocket->accept();
         Client client(clientSocket, pThis->_gameMode); // + event
-        pThis->_gameMode->onNewClient(client);
     }
     catch(std::exception& e)
     {
@@ -44,25 +41,8 @@ void Server::loop(int /*sockfd*/, short eventType, void* arg)
 
 void Server::run()
 {
-    struct event_base* event_loop = event_base_new();
-
-    if (!event_loop)
-    {
-        throw std::logic_error("event base initialization fail");
-    }
-
-    std::cout << "Using LibEvent with backend method " << event_base_get_method(event_loop) << std::endl;
-
-    int features = event_base_get_features(event_loop);
-
-    if (features & EV_FEATURE_ET)
-        std::cout << "  Edge-tiggred events are supported" << std::endl;
-
-    if (features & EV_FEATURE_O1)
-        std::cout << "  O(1) event notification is supported" << std::endl;
-
-    if (features & EV_FEATURE_FDS)
-        std::cout << "  All FD types are supported" << std::endl;
+    _eventBase = new EventBase();
+    _eventBase->displayDetails();
 
     try
     {
@@ -76,28 +56,18 @@ void Server::run()
         std::cout << e.what() << std::endl;
     }
 
-    struct event* connect_event = event_new(event_loop, _serverSocket->getSockfd(), EV_READ | EV_PERSIST, &Server::loop, (void*)this);
+    Event* connectEvent = _eventBase->createEvent(_serverSocket->getSockfd(), EV_READ | EV_PERSIST, &Server::loop, (void*)this);
+    connectEvent->schedule();
 
-    if (event_add(connect_event, NULL))
-    {
-        throw std::logic_error("can't scheduling connection event on the event loop");
-    }
+    _eventBase->dispatch();
 
-    if (event_base_dispatch(event_loop))
-    {
-        throw std::logic_error("error while running event loop");
-    }
+    /*
+     * Server stopped
+     * TODO: clean up and close open connections
+     */
 
-    // Server stop
-
-    // TODO: clean up and close open connections
-
-    if (event_del(connect_event))
-    {
-        throw std::logic_error("can't remove connectyion event from the event loop");
-    }
-
-    event_base_free(event_loop);
+    delete connectEvent;
+    delete _eventBase;
 
     if (_serverSocket->close())
     {

@@ -25,6 +25,7 @@ Client::Client(Socket& clientSocket, GameMode* gameMode) :
     _clientSocket(clientSocket),
     _gameMode(gameMode)
 {
+    _gameMode->onNewClient(*this);
 }
 
 void Client::onReadable()

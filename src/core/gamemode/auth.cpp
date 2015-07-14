@@ -20,7 +20,7 @@
 
 Auth::Auth()
 {
-    std::cout << "Auth" << std::endl << std::flush;
+    std::cout << "Auth gamemode started" << std::endl << std::flush;
 
     std::ifstream keyFile("key/dofus.key", std::ios::binary);
     std::copy(std::istreambuf_iterator<char>(keyFile), std::istreambuf_iterator<char>(), std::back_inserter(_key));
