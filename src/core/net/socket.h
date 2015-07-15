@@ -29,12 +29,14 @@ public:
     ushort getPort();
     std::string toString();
     void setNonBlocking();
+    void reUsePort();
+    void reUseAddress();
     int close();
 
 protected:
     int _sockfd;
     struct sockaddr_in _sockaddr;
+    void setOption(int option, int flag);
 };
-
 
 #endif // CAWOTTESRV_SOCKET_H

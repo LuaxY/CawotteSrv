@@ -48,21 +48,3 @@ Socket ServerSocket::accept()
 
     return Socket(peerSockfd, peerSockaddr);
 }
-
-void ServerSocket::reUsePort()
-{
-    reUse(SO_REUSEPORT);
-}
-
-void ServerSocket::reUseAddress()
-{
-    evutil_make_listen_socket_reuseable(_sockfd);
-    //reUse(SO_REUSEADDR);
-
-}
-
-void ServerSocket::reUse(int option)
-{
-    int reuse = 1;
-    setsockopt(_sockfd, SOL_SOCKET, option, &reuse, sizeof(reuse));
-}

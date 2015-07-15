@@ -38,21 +38,21 @@ std::string Socket::toString()
 void Socket::setNonBlocking()
 {
     evutil_make_socket_nonblocking(_sockfd);
-    return;
+}
 
-    int flags = fcntl(_sockfd, F_GETFL);
+void Socket::reUsePort()
+{
+    setOption(SO_REUSEPORT, 1);
+}
 
-    if (flags == -1)
-    {
-        throw std::logic_error("can't get flags of socket descriptor");
-    }
+void Socket::reUseAddress()
+{
+    setOption(SO_REUSEADDR, 1);
+}
 
-    flags |= O_NONBLOCK;
-
-    if (fcntl(_sockfd, F_SETFL, flags))
-    {
-        throw std::logic_error("can't set flags of socket descriptor");
-    }
+void Socket::setOption(int option, int flag)
+{
+    setsockopt(_sockfd, SOL_SOCKET, option, &flag, sizeof(flag));
 }
 
 int Socket::close()
