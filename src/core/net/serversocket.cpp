@@ -10,6 +10,7 @@
 
 #include <cstring>
 #include <stdexcept>
+#include <event2/util.h>
 
 ServerSocket::ServerSocket(std::string ipToBind, ushort portToListen) :
     _ipToBind(ipToBind),
@@ -27,7 +28,7 @@ ServerSocket::ServerSocket(std::string ipToBind, ushort portToListen) :
 
 void ServerSocket::listen()
 {
-    ::listen(_sockfd, 100); // MAX_CLIENTS
+    ::listen(_sockfd, LISTENER_QUEUE_LIMIT); // MAX_CLIENTS
 }
 
 Socket ServerSocket::accept()
@@ -55,7 +56,9 @@ void ServerSocket::reUsePort()
 
 void ServerSocket::reUseAddress()
 {
-    reUse(SO_REUSEADDR);
+    evutil_make_listen_socket_reuseable(_sockfd);
+    //reUse(SO_REUSEADDR);
+
 }
 
 void ServerSocket::reUse(int option)

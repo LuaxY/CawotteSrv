@@ -28,7 +28,7 @@ public:
     std::string getAddress();
     ushort getPort();
     std::string toString();
-    void setNonblock();
+    void setNonBlocking();
     int close();
 
 protected:

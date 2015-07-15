@@ -20,6 +20,7 @@ public:
     void displayDetails();
     void dispatch();
     Event* createEvent(int fd, short events, event_callback_fn callback, void* arg);
+    event_base* getEventBase();
 
 private:
     struct event_base* _eventBase;

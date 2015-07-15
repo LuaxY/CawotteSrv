@@ -11,6 +11,7 @@
 #include <sstream>
 #include <fcntl.h>
 #include <unistd.h>
+#include <event2/util.h>
 
 int Socket::getSockfd()
 {
@@ -24,7 +25,7 @@ std::string Socket::getAddress()
 
 ushort Socket::getPort()
 {
-    return _sockaddr.sin_port;
+    return ntohs(_sockaddr.sin_port);
 }
 
 std::string Socket::toString()
@@ -34,8 +35,11 @@ std::string Socket::toString()
     return ss.str();
 }
 
-void Socket::setNonblock()
+void Socket::setNonBlocking()
 {
+    evutil_make_socket_nonblocking(_sockfd);
+    return;
+
     int flags = fcntl(_sockfd, F_GETFL);
 
     if (flags == -1)

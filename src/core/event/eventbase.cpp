@@ -53,3 +53,8 @@ Event* EventBase::createEvent(int fd, short events, event_callback_fn callback, 
 {
     return new Event(event_new(_eventBase, fd, events, callback, arg));
 }
+
+event_base* EventBase::getEventBase()
+{
+    return _eventBase;
+}

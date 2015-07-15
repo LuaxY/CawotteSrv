@@ -30,14 +30,14 @@ void Server::loop(int /*sockfd*/, short eventType, void* arg)
 
     try
     {
-        Socket clientSocket = pThis->_serverSocket->accept();
-        Client client(clientSocket, pThis->_gameMode); // + event
-
-        // create new event for client, with READ | WRITE etc... events and create loop inside client class
+        Socket* clientSocket = new Socket(pThis->_serverSocket->accept());
+        clientSocket->setNonBlocking();
+        Client* client = new Client(clientSocket, pThis->_gameMode, pThis->_eventBase);
     }
     catch(std::exception& e)
     {
         std::cout << e.what() << std::endl;
+        return;
     }
 }
 
@@ -51,12 +51,14 @@ void Server::run()
         _serverSocket->listen();
         _serverSocket->reUseAddress();
         _serverSocket->reUsePort();
-        _serverSocket->setNonblock();
+        _serverSocket->setNonBlocking();
     }
     catch(std::exception& e)
     {
         std::cout << e.what() << std::endl;
     }
+
+    std::cout << "Listening on " << _serverSocket->toString() << std::endl;
 
     Event* connectEvent = _eventBase->createEvent(_serverSocket->getSockfd(), EV_READ | EV_PERSIST, &Server::loop, (void*)this);
     connectEvent->schedule();

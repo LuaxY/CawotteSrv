@@ -24,6 +24,7 @@ public:
 private:
     std::string _ipToBind;
     ushort _portToListen;
+    static const int LISTENER_QUEUE_LIMIT = 100;
 
     void reUse(int option);
 };

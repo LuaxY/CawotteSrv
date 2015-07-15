@@ -12,24 +12,44 @@
 #include "hexdump/hexdump.h"
 
 #include <iostream>
+#include <event2/buffer.h>
 
-#include <Poco/Net/SocketStream.h>
-#include <Poco/Net/NetException.h>
-#include <Poco/NObserver.h>
-
-#define SIZE_OF_BUFFER 2048
-
-using Poco::NObserver;
-
-Client::Client(Socket& clientSocket, GameMode* gameMode) :
+Client::Client(Socket* clientSocket, GameMode* gameMode, EventBase* eventBase) :
     _clientSocket(clientSocket),
-    _gameMode(gameMode)
+    _gameMode(gameMode),
+    _eventBase(eventBase)
 {
+    // create buffer event for client
+    struct bufferevent* bufferEvent = bufferevent_socket_new(_eventBase->getEventBase(), _clientSocket->getSockfd(), BEV_OPT_CLOSE_ON_FREE);
+
+    // set callback functions
+    bufferevent_setcb(bufferEvent, &Client::onReadable, &Client::onWritable, &Client::onEvent, this);
+
+    // set buffer limit
+    bufferevent_setwatermark(bufferEvent, EV_READ, 0, SIZE_OF_BUFFER);
+
+    // start buffer event
+    bufferevent_enable(bufferEvent, EV_READ | EV_WRITE);
+
     _gameMode->onNewClient(*this);
 }
 
-void Client::onReadable()
+void Client::onReadable(struct bufferevent* bufferEvent, void* arg)
 {
+    Client* pThis = (Client*)arg;
+
+    std::cout << "receive something" << std::endl;
+
+    struct evbuffer* buffer = bufferevent_get_input(bufferEvent);
+    char data[SIZE_OF_BUFFER];
+
+    ssize_t size = evbuffer_remove(buffer, data, SIZE_OF_BUFFER);
+
+    data[size] = 0;
+
+    std::cout << data << std::endl;
+
+    /*
     try
     {
         char tmpBuffer[SIZE_OF_BUFFER + 1];
@@ -58,16 +78,45 @@ void Client::onReadable()
     {
         std::cout << "[" << e.className() << "] " << e.what() << std::endl << std::flush;
     }
+     */
 }
 
-void Client::onWritable()
+void Client::onWritable(struct bufferevent* bufferEvent, void* arg)
 {
+    Client* pThis = (Client*)arg;
 
+    std::cout << "write something" << std::endl;
 }
 
-void Client::onShutdown()
+void Client::onEvent(struct bufferevent* bufferEvent, short eventType, void* arg)
 {
-    close();
+    Client* pThis = (Client*)arg;
+
+    if (eventType & BEV_EVENT_EOF)
+    {
+        std::cout << "[" << pThis->toString() << "] [EVENT] " <<
+            "BEV_EVENT_EOF" << std::endl;
+        return;
+    }
+
+    if (eventType & BEV_EVENT_ERROR)
+    {
+        std::cout << "[" << pThis->toString() << "] [EVENT] " <<
+            "BEV_EVENT_ERROR" << std::endl;
+        return;
+    }
+
+    if (eventType & BEV_EVENT_TIMEOUT)
+    {
+        std::cout << "[" << pThis->toString() << "] [EVENT] " <<
+            "BEV_EVENT_TIMEOUT" << std::endl;
+        return;
+    }
+
+    std::cout << "[" << pThis->toString() << "] [EVENT] " <<
+        "UNKNOWN_EVENT: " << eventType << std::endl;
+
+    //pThis->close();
 }
 
 void Client::send(IMessage& message)
@@ -93,10 +142,10 @@ void Client::send(IMessage& message)
 void Client::close()
 {
     std::cout << "[" << toString() << "] client disconnected"  << std::endl << std::flush;
-    _clientSocket.close();
+    _clientSocket->close();
 }
 
 std::string Client::toString()
 {
-    return _clientSocket.toString();
+    return _clientSocket->toString();
 }
