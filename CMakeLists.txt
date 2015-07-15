@@ -21,8 +21,8 @@ include_directories(src)
 include_directories(dep)
 file(GLOB_RECURSE SOURCE_FILES src/*.* dep/*.*)
 
-file(COPY config/cawotte.ini DESTINATION config/cawotte.ini)
-file(COPY key/dofus.key DESTINATION key/dofus.key)
+file(COPY config/cawotte.ini DESTINATION config)
+file(COPY key/dofus.key DESTINATION key)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 target_link_libraries(${PROJECT_NAME} ${Poco_Foundation_LIBRARY} ${Poco_Util_LIBRARY} ${Poco_Net_LIBRARY} ${Poco_Crypto_LIBRARY} ${LIBEVENT_LIB})

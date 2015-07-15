@@ -32,6 +32,8 @@ void Server::loop(int /*sockfd*/, short eventType, void* arg)
     {
         Socket clientSocket = pThis->_serverSocket->accept();
         Client client(clientSocket, pThis->_gameMode); // + event
+
+        // create new event for client, with READ | WRITE etc... events and create loop inside client class
     }
     catch(std::exception& e)
     {
