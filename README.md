@@ -1,3 +1,3 @@
 # Cawotte Server
 
-Dofus 2 Server PoC using Poco C++
+Dofus 2 Server PoC
