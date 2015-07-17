@@ -29,7 +29,6 @@ public:
 
 private:
     static void onReadable(struct bufferevent* bufferEvent, void* arg);
-    static void onWritable(struct bufferevent* bufferEvent, void* arg);
     static void onEvent(struct bufferevent* bufferEvent, short eventType, void* arg);
 
     Socket* _clientSocket;

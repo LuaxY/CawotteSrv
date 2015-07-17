@@ -12,14 +12,12 @@
 #ifndef CAWOTTESRV_BINARYWRITER_H
 #define CAWOTTESRV_BINARYWRITER_H
 
-#include <Poco/ByteOrder.h>
 #include <cstring>
 #include <string>
 #include <vector>
 #include <cmath>
 #include "core/utils/types.h"
-
-using Poco::ByteOrder;
+#include "core/utils/byteorder.h"
 
 class BinaryWriter
 {

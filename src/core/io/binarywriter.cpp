@@ -41,37 +41,37 @@ void BinaryWriter::writeBytes(ByteArray data, bool writeSize)
 
 void BinaryWriter::writeShort(short data)
 {
-    data = ByteOrder::toBigEndian(data);
+    data = ByteOrder::swap(data);
     write(data);
 }
 
 void BinaryWriter::writeUShort(ushort data)
 {
-    data = ByteOrder::toBigEndian(data);
+    data = ByteOrder::swap(data);
     write(data);
 }
 
 void BinaryWriter::writeInt(int data)
 {
-    data = ByteOrder::toBigEndian(data);
+    data = ByteOrder::swap(data);
     write(data);
 }
 
 void BinaryWriter::writeUInt(uint data)
 {
-    data = ByteOrder::toBigEndian(data);
+    data = ByteOrder::swap(data);
     write(data);
 }
 
 void BinaryWriter::writeLong(long data)
 {
-    data = ByteOrder::toBigEndian(data);
+    data = ByteOrder::swap(data);
     write(data);
 }
 
 void BinaryWriter::writeULong(ulong data)
 {
-    data = ByteOrder::toBigEndian(data);
+    data = ByteOrder::swap(data);
     write(data);
 }
 
@@ -79,8 +79,8 @@ void BinaryWriter::writeDouble(double data)
 {
     int* p = (int*)&data;
     int tmp = p[0];
-    p[0] = ByteOrder::toBigEndian(p[1]);
-    p[1] = ByteOrder::toBigEndian(tmp);
+    p[0] = ByteOrder::swap(p[1]);
+    p[1] = ByteOrder::swap(tmp);
 
     write(data);
 }
