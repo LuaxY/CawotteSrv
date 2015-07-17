@@ -16,8 +16,8 @@
 class Kernel : public Singleton<Kernel>
 {
 public:
-    void init();
-    void initConfiguration();
+    void init(std::string configFile);
+    void initConfiguration(std::string configFile);
     void initCache();
 
     GameMode* gameMode();

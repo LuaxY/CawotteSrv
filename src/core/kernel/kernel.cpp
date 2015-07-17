@@ -13,9 +13,9 @@
 
 #include <iostream>
 
-void Kernel::init()
+void Kernel::init(std::string configFile)
 {
-    initConfiguration();
+    initConfiguration(configFile);
     initCache();
 
     try
@@ -35,12 +35,12 @@ void Kernel::init()
     server.run(); // WARN: blocking function !!
 }
 
-void Kernel::initConfiguration()
+void Kernel::initConfiguration(std::string configFile)
 {
     try
     {
         Config::create();
-        Config::instance().init("config/cawotte.ini");
+        Config::instance().init(configFile);
     }
     catch (std::exception& e)
     {

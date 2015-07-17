@@ -11,7 +11,7 @@ int main(int argc, char** argv)
         << CawotteSrv_PATCH
         << "] Starting..." << std::endl;
 
-    char* configFile;
+    char* configFile = (char*)"config/cawotte.ini";
 
     for (int i = 1; i < argc; ++i)
     {
@@ -20,7 +20,7 @@ int main(int argc, char** argv)
     }
 
     Kernel kernel = Kernel::create();
-    kernel.init();
+    kernel.init(std::string(configFile));
 
     return 0;
 }
