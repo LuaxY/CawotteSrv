@@ -20,16 +20,16 @@ Client::Client(Socket* clientSocket, GameMode* gameMode, EventBase* eventBase) :
     _eventBase(eventBase)
 {
     // create buffer event for client
-    struct bufferevent* bufferEvent = bufferevent_socket_new(_eventBase->getEventBase(), _clientSocket->getSockfd(), BEV_OPT_CLOSE_ON_FREE);
+    _bufferEvent = bufferevent_socket_new(_eventBase->getEventBase(), _clientSocket->getSockfd(), BEV_OPT_CLOSE_ON_FREE);
 
     // set callback functions
-    bufferevent_setcb(bufferEvent, &Client::onReadable, &Client::onWritable, &Client::onEvent, this);
+    bufferevent_setcb(_bufferEvent, &Client::onReadable, NULL, &Client::onEvent, this);
 
     // set buffer limit
-    bufferevent_setwatermark(bufferEvent, EV_READ, 0, SIZE_OF_BUFFER);
+    bufferevent_setwatermark(_bufferEvent, EV_READ, 0, SIZE_OF_BUFFER);
 
     // start buffer event
-    bufferevent_enable(bufferEvent, EV_READ | EV_WRITE);
+    bufferevent_enable(_bufferEvent, EV_READ | EV_WRITE);
 
     _gameMode->onNewClient(*this);
 }
@@ -38,54 +38,24 @@ void Client::onReadable(struct bufferevent* bufferEvent, void* arg)
 {
     Client* pThis = (Client*)arg;
 
-    std::cout << "receive something" << std::endl;
+    char tmpBuffer[SIZE_OF_BUFFER];
+    struct evbuffer* bufferInput = bufferevent_get_input(bufferEvent);
+    ssize_t size = evbuffer_remove(bufferInput, tmpBuffer, SIZE_OF_BUFFER);
 
-    struct evbuffer* buffer = bufferevent_get_input(bufferEvent);
-    char data[SIZE_OF_BUFFER];
-
-    ssize_t size = evbuffer_remove(buffer, data, SIZE_OF_BUFFER);
-
-    data[size] = 0;
-
-    std::cout << data << std::endl;
-
-    /*
-    try
+    if (size > 0)
     {
-        char tmpBuffer[SIZE_OF_BUFFER + 1];
-        int size = 1; // _clientSocket.receiveBytes(tmpBuffer, SIZE_OF_BUFFER);
+        Packet packet;
+        std::vector<char> buffer(tmpBuffer, tmpBuffer + size);
 
-        if (size == 0)
+        while (packet.deserialize(buffer))
         {
-            close();
-        }
-        else
-        {
-            Packet packet;
-            std::vector<char> buffer(tmpBuffer, tmpBuffer + size);
-
-            while (packet.deserialize(buffer))
+            if (!pThis->_gameMode->onNewPacket(*pThis, packet))
             {
-                if (!_gameMode->onNewPacket(*this, packet))
-                {
-                    std::cout << "receive packet id " << packet.id() << ", " << packet.length() << " bytes" << std::endl << std::flush;
-                    hexdump(tmpBuffer, static_cast<uint>(size));
-                }
+                std::cout << "receive packet id " << packet.id() << ", " << packet.length() << " bytes" << std::endl << std::flush;
+                hexdump(tmpBuffer, static_cast<uint>(size));
             }
         }
     }
-    catch (Poco::Net::NetException& e)
-    {
-        std::cout << "[" << e.className() << "] " << e.what() << std::endl << std::flush;
-    }
-     */
-}
-
-void Client::onWritable(struct bufferevent* bufferEvent, void* arg)
-{
-    Client* pThis = (Client*)arg;
-
-    std::cout << "write something" << std::endl;
 }
 
 void Client::onEvent(struct bufferevent* bufferEvent, short eventType, void* arg)
@@ -94,6 +64,8 @@ void Client::onEvent(struct bufferevent* bufferEvent, short eventType, void* arg
 
     if (eventType & BEV_EVENT_EOF)
     {
+        // TODO: close client
+
         std::cout << "[" << pThis->toString() << "] [EVENT] " <<
             "BEV_EVENT_EOF" << std::endl;
         return;
@@ -128,7 +100,7 @@ void Client::send(IMessage& message)
 
         packet.serialize(message, buffer);
 
-        // _clientSocket.sendBytes(buffer.data(), static_cast<int>(buffer.size()));
+        bufferevent_write(_bufferEvent, buffer.data(), buffer.size());
 
         std::cout << "[" << toString() << "] [SND] " <<
             message.getName() << " (" << message.getId() << ")" << std::endl << std::flush;

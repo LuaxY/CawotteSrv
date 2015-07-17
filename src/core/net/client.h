@@ -35,6 +35,7 @@ private:
     Socket* _clientSocket;
     GameMode* _gameMode;
     EventBase* _eventBase;
+    struct bufferevent* _bufferEvent;
 
     static const int SIZE_OF_BUFFER = 2048;
 };

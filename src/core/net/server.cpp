@@ -33,6 +33,7 @@ void Server::loop(int /*sockfd*/, short eventType, void* arg)
         Socket* clientSocket = new Socket(pThis->_serverSocket->accept());
         clientSocket->setNonBlocking();
         Client* client = new Client(clientSocket, pThis->_gameMode, pThis->_eventBase);
+        // TODO: Store client in vector
     }
     catch(std::exception& e)
     {
