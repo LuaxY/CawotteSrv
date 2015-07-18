@@ -13,25 +13,23 @@
 
 #include <iostream>
 
-void Kernel::init(std::string configFile)
+void Kernel::init(std::string configFile, std::string gameMode)
 {
     initConfiguration(configFile);
     initCache();
 
     try
     {
-        createGameMode("auth");
+        createGameMode(gameMode);
     }
     catch (std::exception& e)
     {
-        std::cout << e.what() << std::endl << std::flush;
+        std::cout << e.what() << std::endl;
+        panic(1); // GAME_MODE_NOT_FOUND
     }
 
-    std::string host = Config::instance().getString("auth_server.host", "0.0.0.0");
-    ushort port = static_cast<ushort>(Config::instance().getInt("auth_server.port", 5555));
-
     Server server;
-    server.init(host, port, _gameMode);
+    server.init(_gameMode->getHost(), _gameMode->getPort(), _gameMode);
     server.run(); // WARN: blocking function !!
 }
 

@@ -10,7 +10,6 @@
 #define CAWOTTESRV_AUTH_H
 
 #include "gamemode.h"
-#include "core/utils/types.h"
 
 class Auth : public GameMode
 {
@@ -19,6 +18,8 @@ public:
 
     void initFrames();
     void onNewClient(Client& client);
+    std::string getHost();
+    ushort getPort();
 
 private:
     ByteArray _key;
