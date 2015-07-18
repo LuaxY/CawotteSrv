@@ -12,6 +12,7 @@
 #include "dofus/frames/frame.h"
 
 #include "dofus/network/messages/connection/identificationmessage.h"
+#include "dofus/network/messages/connection/clearidentificationmessage.h"
 
 class AuthenticationFrame : public Frame
 {
@@ -22,6 +23,7 @@ public:
 
 private:
     void onIdentificationMessage(Client& client, std::shared_ptr<IdentificationMessage> message);
+    void onClearIdentificationMessage(Client& client, std::shared_ptr<ClearIdentificationMessage> message);
 
     uint _priority = 10;
 };

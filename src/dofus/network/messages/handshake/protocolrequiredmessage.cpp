@@ -21,7 +21,7 @@ ushort ProtocolRequiredMessage::getId()
 
 std::string ProtocolRequiredMessage::getName()
 {
-    return "ProtocolRequired";
+    return "ProtocolRequiredMessage";
 }
 
 void ProtocolRequiredMessage::serialize(BinaryWriter& writer)

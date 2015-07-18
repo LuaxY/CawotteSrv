@@ -25,6 +25,7 @@ file(GLOB_RECURSE SOURCE_FILES src/*.* dep/*.*)
 
 file(COPY config/cawotte.ini DESTINATION config)
 file(COPY key/dofus.key DESTINATION key)
+file(COPY tools/AuthPatch/bin/AuthPatch.swf DESTINATION tools/AuthPatch/bin)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
