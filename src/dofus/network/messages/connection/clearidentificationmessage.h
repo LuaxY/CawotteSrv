@@ -1,5 +1,5 @@
 //
-// clearidentificationmessage.cpp.h
+// clearidentificationmessage.h
 // CawotteSrv
 //
 // Created by Luax on 7/18/15.

@@ -1,12 +1,12 @@
 //
-// clearidentificationmessage.cpp.cpp
+// clearidentificationmessage.cpp
 // CawotteSrv
 //
 // Created by Luax on 7/18/15.
 // Copyright (c) 2015 Luax. All rights reserved.
 //
 
-#include "clearidentificationmessage.cpp.h"
+#include "clearidentificationmessage.h"
 
 void ClearIdentificationMessage::initClearIdentificationMessage(std::string _username, std::string _password)
 {
