@@ -19,3 +19,6 @@ addons:
       - libevent-dev
       - gcc-4.8
       - g++-4.8
+
+notifications:
+  email: false

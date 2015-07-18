@@ -45,7 +45,7 @@ void Socket::setNonBlocking()
 
 void Socket::reUsePort()
 {
-#ifndef _WIN32
+#ifndef SO_REUSEPORT
     setOption(SO_REUSEPORT, 1);
 #endif
 }
