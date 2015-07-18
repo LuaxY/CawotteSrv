@@ -6,7 +6,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 
 set(CawotteSrv_MAJOR 0)
 set(CawotteSrv_MINOR 1)
-set(CawotteSrv_PATCH 0)
+set(CawotteSrv_PATCH 1)
 
 add_definitions(-DCawotteSrv_MAJOR=${CawotteSrv_MAJOR})
 add_definitions(-DCawotteSrv_MINOR=${CawotteSrv_MINOR})
