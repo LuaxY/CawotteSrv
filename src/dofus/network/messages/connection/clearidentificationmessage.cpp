@@ -10,7 +10,7 @@
 
 void ClearIdentificationMessage::initClearIdentificationMessage(std::string _username, std::string _password)
 {
-    usename = _username;
+    username = _username;
     password = _password;
 }
 
@@ -25,12 +25,12 @@ std::string ClearIdentificationMessage::getName()
 }
 void ClearIdentificationMessage::serialize(BinaryWriter& writer)
 {
-    writer.writeUTF(usename);
+    writer.writeUTF(username);
     writer.writeUTF(password);
 }
 
-void IdentificationMessage::deserialize(BinaryReader& reader)
+void ClearIdentificationMessage::deserialize(BinaryReader& reader)
 {
-    usename = reader.readUTF();
+    username = reader.readUTF();
     password = reader.readUTF();
 }
