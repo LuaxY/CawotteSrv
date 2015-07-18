@@ -13,11 +13,9 @@ before_install:
 addons:
   apt:
     sources:
-    - ubuntu-toolchain-r-test
-addons:
-  apt:
+      - ubuntu-toolchain-r-test
     packages:
-    - libevent-2.0-5
-    - libevent-dev
-    - gcc-4.8
-    - g++-4.8
+      - libevent-2.0-5
+      - libevent-dev
+      - gcc-4.8
+      - g++-4.8
