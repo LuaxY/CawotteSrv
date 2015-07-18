@@ -46,6 +46,6 @@ void Auth::onNewClient(Client& client)
     client.send(hcm);
 
     ProtocolRequiredMessage prm;
-    prm.initProtocolRequiredMessage(1645, 1645); // current, required
+    prm.initProtocolRequiredMessage(1658, 1658); // current, required
     client.send(prm);
 }

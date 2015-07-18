@@ -37,9 +37,9 @@ void hexdump(void *mem, unsigned int len)
                 {
                     putchar(' ');
                 }
-                else if(isprint(((char*)mem)[j])) /* printable char */
+                else if(isprint(((unsigned char*)mem)[j])) /* printable char */
                 {
-                    putchar(0xFF & ((char*)mem)[j]);
+                    putchar(0xFF & ((unsigned char*)mem)[j]);
                 }
                 else /* other char */
                 {

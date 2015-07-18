@@ -40,7 +40,7 @@ void Client::onReadable(struct bufferevent* bufferEvent, void* arg)
 
     char tmpBuffer[SIZE_OF_BUFFER];
     struct evbuffer* bufferInput = bufferevent_get_input(bufferEvent);
-    ssize_t size = evbuffer_remove(bufferInput, tmpBuffer, SIZE_OF_BUFFER);
+    int size = evbuffer_remove(bufferInput, tmpBuffer, SIZE_OF_BUFFER);
 
     if (size > 0)
     {

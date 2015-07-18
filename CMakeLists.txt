@@ -13,6 +13,11 @@ add_definitions(-DCawotteSrv_MINOR=${CawotteSrv_MINOR})
 add_definitions(-DCawotteSrv_PATCH=${CawotteSrv_PATCH})
 
 find_package(LibEvent)
+include_directories(${LIBEVENT_INCLUDE_DIR})
+
+if(WIN32)
+  include_directories(${LIBEVENT_WIN32_INCLUDE_DIR})
+endif()
 
 include_directories(src)
 include_directories(dep)
@@ -22,4 +27,9 @@ file(COPY config/cawotte.ini DESTINATION config)
 file(COPY key/dofus.key DESTINATION key)
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
-target_link_libraries(${PROJECT_NAME} ${LIBEVENT_LIB})
+
+if(WIN32)
+  target_link_libraries(${PROJECT_NAME} ${LIBEVENT_LIB} ws2_32)
+else()
+  target_link_libraries(${PROJECT_NAME} ${LIBEVENT_LIB})
+endif()

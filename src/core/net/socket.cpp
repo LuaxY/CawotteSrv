@@ -10,8 +10,11 @@
 
 #include <sstream>
 #include <fcntl.h>
-#include <unistd.h>
 #include <event2/util.h>
+
+#ifndef _WIN32
+    #include <unistd.h>
+#endif
 
 int Socket::getSockfd()
 {
@@ -42,7 +45,9 @@ void Socket::setNonBlocking()
 
 void Socket::reUsePort()
 {
+#ifndef _WIN32
     setOption(SO_REUSEPORT, 1);
+#endif
 }
 
 void Socket::reUseAddress()
@@ -50,12 +55,16 @@ void Socket::reUseAddress()
     setOption(SO_REUSEADDR, 1);
 }
 
-void Socket::setOption(int option, int flag)
+void Socket::setOption(int option, char flag)
 {
     setsockopt(_sockfd, SOL_SOCKET, option, &flag, sizeof(flag));
 }
 
 int Socket::close()
 {
+#ifdef _WIN32
+    return closesocket(_sockfd);
+#else
     return ::close(_sockfd);
+#endif
 }

@@ -52,7 +52,7 @@ int BinaryReader::bytesAvailable()
     return static_cast<int>(_buffer.size() - _index);
 }
 
-void BinaryReader::reverseBytes(uint8_t* bytes, size_t count)
+void BinaryReader::reverseBytes(uchar* bytes, size_t count)
 {
     for (size_t lo = 0, hi = count - 1; hi > lo; ++lo, --hi)
     {
@@ -62,7 +62,7 @@ void BinaryReader::reverseBytes(uint8_t* bytes, size_t count)
     }
 }
 
-void BinaryReader::readBytes(uint8_t* bytes, size_t count)
+void BinaryReader::readBytes(uchar* bytes, size_t count)
 {
     memcpy(bytes, &_buffer[_index], count);
     _index += count;
@@ -392,8 +392,8 @@ UInt64 BinaryReader::readUInt64()
 template<class T>
 void BinaryReader::read(T &val)
 {
-    readBytes(reinterpret_cast<uint8_t*>(&val), sizeof(T));
-    reverseBytes(reinterpret_cast<uint8_t*>(&val), sizeof(T));
+    readBytes(reinterpret_cast<uchar*>(&val), sizeof(T));
+    reverseBytes(reinterpret_cast<uchar*>(&val), sizeof(T));
 }
 
 template<class T>

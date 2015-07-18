@@ -9,6 +9,8 @@
 #ifndef CAWOTTESRV_TICKET_H
 #define CAWOTTESRV_TICKET_H
 
+#include "core/utils/types.h"
+
 #include <string>
 #include <random>
 

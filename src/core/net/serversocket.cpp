@@ -16,10 +16,20 @@ ServerSocket::ServerSocket(std::string ipToBind, ushort portToListen) :
     _ipToBind(ipToBind),
     _portToListen(portToListen)
 {
+#ifdef _WIN32
+    WSADATA wsa;
+    WSAStartup(MAKEWORD(2, 2), &wsa);
+#endif
+
     memset(&_sockaddr, 0, sizeof(sockaddr));
     _sockaddr.sin_family = AF_INET;
     _sockaddr.sin_port = htons(_portToListen);
+
+#ifdef _WIN32
+    _sockaddr.sin_addr.s_addr = inet_addr(_ipToBind.c_str());
+#else
     inet_aton(_ipToBind.c_str(), &_sockaddr.sin_addr);
+#endif
 
     _sockfd = socket(AF_INET, SOCK_STREAM, 0);
 

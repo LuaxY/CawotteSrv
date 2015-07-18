@@ -9,10 +9,15 @@
 #ifndef CAWOTTESRV_SOCKET_H
 #define CAWOTTESRV_SOCKET_H
 
+#ifdef _WIN32
+    #include <winsock2.h>
+#else
+    #include <sys/socket.h>
+    #include <arpa/inet.h>
+#endif
+
 #include "core/utils/types.h"
 
-#include <sys/socket.h>
-#include <arpa/inet.h>
 #include <string>
 
 class Socket
@@ -36,7 +41,7 @@ public:
 protected:
     int _sockfd;
     struct sockaddr_in _sockaddr;
-    void setOption(int option, int flag);
+    void setOption(int option, char flag);
 };
 
 #endif // CAWOTTESRV_SOCKET_H

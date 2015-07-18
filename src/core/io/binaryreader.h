@@ -31,8 +31,8 @@ public:
     bool setIndex(uint index);
     uint index();
     int bytesAvailable();
-    void reverseBytes(uint8_t* bytes, size_t count);
-    void readBytes(uint8_t* bytes, size_t count);
+    void reverseBytes(uchar* bytes, size_t count);
+    void readBytes(uchar* bytes, size_t count);
 
     short readShort();
     ushort readUShort();
