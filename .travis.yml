@@ -2,21 +2,13 @@ language: cpp
 os: linux
 compiler: gcc
 
+before_install:
+  - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+
+install:
+  - sudo apt-get install -qq g++-4.8 gcc-4.8 libevent-2.0-5 libevent-dev
+  - export CXX="g++-4.8" CC="gcc-4.8"
+
 script: 
   - cmake .
   - make
-
-before_install:
-  - export CXX="g++-4.8" CC="gcc-4.8"
-
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-addons:
-  apt:
-    packages:
-    - libevent-2.0-5
-    - libevent-dev
-    - gcc-4.8
-    - g++-4.8
