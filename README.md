@@ -7,6 +7,8 @@ CawotteSrv is Dofus 2 emulator developped in C++11
 
 ## Install ![Icon](http://i.imgur.com/k3FhNf0.png)
 
+[![Join the chat at https://gitter.im/LuaxY/CawotteSrv](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/LuaxY/CawotteSrv?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Dependencies:
 
 - gcc/g++ >= 4.8
