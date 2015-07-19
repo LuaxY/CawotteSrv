@@ -1,4 +1,5 @@
-# CawotteSrv
+![Logo](http://i.imgur.com/2dscckl.png)
+
 [![Build Status](https://travis-ci.org/LuaxY/CawotteSrv.svg?branch=master)](https://travis-ci.org/LuaxY/CawotteSrv) [![Issues](http://img.shields.io/github/issues/LuaxY/CawotteSrv.svg?style=flat)](https://github.com/twitch-irc/LuaxY/CawotteSrv)
 
 CawotteSrv is Dofus 2 emulator developped in C++11  
