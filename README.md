@@ -5,7 +5,7 @@
 CawotteSrv is Dofus 2 emulator developped in C++11  
 [Kanban Board](http://dev.voidmx.net/boards/JHBQWdSQdkcC84qWD/cawottesrv)
 
-## Install
+## Install ![Icon](http://i.imgur.com/k3FhNf0.png)
 
 Dependencies:
 
@@ -20,7 +20,7 @@ cmake .
 make
 ```
 
-## Run
+## Run ![Icon](http://i.imgur.com/avaUYAc.png)
 
 Launch server with configuration file and game mode
 ```
@@ -28,18 +28,18 @@ Launch server with configuration file and game mode
 ./CawotteSrv -c config/jiva.ini -g world
 ```
 
-## Contributors
+## Contributors ![Icon](http://i.imgur.com/gaHjnk3.png)
 
 - LuaxY - https://github.com/LuaxY
 
-## Thanks
+## Thanks ![Icon](http://i.imgur.com/QUGkKoc.png)
 
 - Xeo-Skr - https://github.com/Xeo-Skr
 - scalexm - https://github.com/scalexm
 - Alleos13 - https://github.com/Alleos13
 - Many others
 
-## License
+## License ![Icon](http://i.imgur.com/rOOuzf4.png)
 
 The MIT License (MIT)
 
