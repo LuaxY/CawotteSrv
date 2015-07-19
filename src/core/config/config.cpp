@@ -15,7 +15,6 @@ void Config::init(std::string filename)
 
     if (reader->ParseError() < 0)
     {
-        // this is not really exception safe...
         throw std::logic_error("unable to open configuration file");
     }
 }

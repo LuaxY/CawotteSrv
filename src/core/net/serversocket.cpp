@@ -38,7 +38,7 @@ ServerSocket::ServerSocket(std::string ipToBind, ushort portToListen) :
 
 void ServerSocket::listen()
 {
-    ::listen(_sockfd, LISTENER_QUEUE_LIMIT); // MAX_CLIENTS
+    ::listen(_sockfd, LISTENER_QUEUE_LIMIT);
 }
 
 Socket ServerSocket::accept()

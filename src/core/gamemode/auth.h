@@ -23,6 +23,7 @@ public:
 
 private:
     ByteArray _key;
+    static const int SIZE_OF_SALT = 32;
 };
 
 

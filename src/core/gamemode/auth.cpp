@@ -17,8 +17,6 @@
 #include "dofus/network/messages/handshake/protocolrequiredmessage.h"
 #include "dofus/frames/connection/authenticationframe.h"
 
-#define SIZE_OF_SALT 32
-
 Auth::Auth()
 {
     std::cout << "[GameMode] Auth started" << std::endl << std::flush;

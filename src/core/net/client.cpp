@@ -64,7 +64,8 @@ void Client::onEvent(struct bufferevent* bufferEvent, short eventType, void* arg
 
     if (eventType & BEV_EVENT_EOF)
     {
-        // TODO: close client
+        // TODO: remove client in clients list vector
+        pThis->close();
 
         std::cout << "[" << pThis->toString() << "] [EVENT] " <<
             "BEV_EVENT_EOF" << std::endl;
@@ -87,8 +88,6 @@ void Client::onEvent(struct bufferevent* bufferEvent, short eventType, void* arg
 
     std::cout << "[" << pThis->toString() << "] [EVENT] " <<
         "UNKNOWN_EVENT: " << eventType << std::endl;
-
-    //pThis->close();
 }
 
 void Client::send(IMessage& message)
