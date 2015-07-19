@@ -1,11 +1,10 @@
 ![Logo](http://i.imgur.com/2dscckl.png)
 
-[![Build Status](https://travis-ci.org/LuaxY/CawotteSrv.svg?branch=master)](https://travis-ci.org/LuaxY/CawotteSrv) [![Issues](http://img.shields.io/github/issues/LuaxY/CawotteSrv.svg?style=flat)](https://github.com/twitch-irc/LuaxY/CawotteSrv)
+[![Build Status](https://travis-ci.org/LuaxY/CawotteSrv.svg?branch=master)](https://travis-ci.org/LuaxY/CawotteSrv) [![Issues](http://img.shields.io/github/issues/LuaxY/CawotteSrv.svg?style=flat)](https://github.com/LuaxY/CawotteSrv)
+[![Kanban Board](https://img.shields.io/badge/Kanban-Board-blue.svg)](http://dev.voidmx.net/boards/JHBQWdSQdkcC84qWD/cawottesrv)
+[![Join the chat at https://gitter.im/LuaxY/CawotteSrv](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/LuaxY/CawotteSrv?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 CawotteSrv is Dofus 2 emulator developped in C++11  
-[Kanban Board](http://dev.voidmx.net/boards/JHBQWdSQdkcC84qWD/cawottesrv)
-
-[![Join the chat at https://gitter.im/LuaxY/CawotteSrv](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/LuaxY/CawotteSrv?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Requirements
 
