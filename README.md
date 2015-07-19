@@ -11,8 +11,8 @@ CawotteSrv is Dofus 2 emulator developped in C++11
 - Platform: Linux, Windows
 - CMake ≥ 2.8
 - GCC ≥ 4.8 (Linux)
-- MSVC  12 (Windows)
-- libevent >= 2.0
+- MSVC ≥ 12 (Windows)
+- libevent ≥ 2.0
 
 ## Install
 
