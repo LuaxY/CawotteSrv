@@ -5,6 +5,13 @@ CawotteSrv is Dofus 2 emulator developped in C++11
 
 ## Install
 
+Dependencies:
+
+- gcc/g++ >= 4.8
+- cmake >= 2.8
+- libevent >= 2.0-5
+- libevent-dev
+
 Run CMake and build server
 ```
 cmake .
